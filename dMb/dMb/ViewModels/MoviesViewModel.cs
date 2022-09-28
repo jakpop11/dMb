@@ -67,6 +67,8 @@ namespace dMb.ViewModels
 
         public Command FilterClickCommand { get; }
 
+        public Command ResetFiltersCommand { get; }
+
 
 
         public MoviesViewModel()
@@ -79,6 +81,7 @@ namespace dMb.ViewModels
             AddMovieCommand = new Command(AddMovie);
             ItemTappedCommand = new Command<Movie>(SelectMovie);
             FilterClickCommand = new Command(TogglePanelVisibility);
+            ResetFiltersCommand = new Command(ResetFilters);
 
             LoadGenres();
         }
@@ -168,6 +171,18 @@ namespace dMb.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine(e);
             }
+        }
+
+        void ResetFilters()
+        {
+            foreach(var gb in Genres)
+            {
+                gb.Bool = false;
+            }
+
+            // No response from UI
+            //
+
         }
 
 
