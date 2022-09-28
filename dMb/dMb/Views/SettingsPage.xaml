@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:dMb.ViewModels"
+             xmlns:model="clr-namespace:dMb.Models"
+             xmlns:controls="clr-namespace:dMb.Controls"
+             x:Class="dMb.Views.SettingsPage"
+             x:DataType="local:SettingsViewModel"
+             Title="{Binding Title}">
+
+    <StackLayout>
+        <Label Text="Here will be settings" />
+        <Button Text="btn"/>
+        <Switch />
+
+        <controls:CustomCheckBox />
+
+
+        <Button Text="Reset Genres" Command="{Binding ResetGenresCommand}"/>
+        <Button Text="Pick File" Command="{Binding PickFileCommand}"/>
+        <Label Text="{Binding FilePathDisplay}" />
+
+
+        <ScrollView Margin="20, 0">
+            <StackLayout BindableLayout.ItemsSource="{Binding MovieGenres}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="auto,auto" x:DataType="model:MovieGenres">
+                            <Label Grid.Column="0" TextColor="GreenYellow" Text="{Binding MovieId}" />
+                            <Label Grid.Column="1" TextColor="Green" Text="{Binding GenreId}" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+            
+        </ScrollView>
+
+    </StackLayout>
+</ContentPage>

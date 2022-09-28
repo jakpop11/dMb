@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="dMb.Views.MoviesPage" 
+             x:DataType="local:MoviesViewModel"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:dMb.ViewModels"
+             xmlns:model="clr-namespace:dMb.Models"
+             x:Name="BrowseMoviesPage" >
+
+    
+    <!--Tool Bar-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddMovieCommand}"/>
+        <ToolbarItem Text="Filters" Command="{Binding FilterClickCommand}"/>
+    </ContentPage.ToolbarItems>
+
+
+    <StackLayout Orientation="Horizontal">
+        
+        <!--#region Movies -->
+        <Grid RowDefinitions="40, *">
+            <SearchBar Grid.Row="0" Placeholder="Search ..." />
+            <RefreshView Grid.Row="1"
+                         Command="{Binding LoadMoviesCommand}"
+                         IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+                <CollectionView ItemsSource="{Binding Movies}"
+                            SelectionMode="None" >
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label Text="No movies" />
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid RowDefinitions="*, auto, auto" ColumnDefinitions="80, *"
+                                  HeightRequest="120"
+                                  Padding="3"
+                                  x:DataType="model:Movie">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                          Command="{Binding Source={RelativeSource AncestorType={x:Type local:MoviesViewModel}}, Path=ItemTappedCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+
+                                <Image Grid.RowSpan="3" Grid.Column="0"
+                                       Aspect="AspectFill" 
+                                       Source="{Binding ImgUrl}" />
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding Title}"
+                                       MaxLines="2"
+                                       LineBreakMode="TailTruncation"
+                                       VerticalOptions="StartAndExpand"
+                                       FontSize="18" />
+                                <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding EditDate}"
+                                       VerticalOptions="End"
+                                       FontSize="12" />
+                                <StackLayout Grid.Row="2" Grid.Column="1"
+                                             Orientation="Horizontal"
+                                             BindableLayout.ItemsSource="{Binding Genres}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame BackgroundColor="CornflowerBlue"
+                                                   CornerRadius="5"
+                                                   Padding="5, 2"
+                                                   MinimumWidthRequest="50"
+                                                   x:DataType="model:Genre">
+                                                <Label Text="{Binding Name}" 
+                                                       FontSize="14"
+                                                       LineBreakMode="TailTruncation"
+                                                       VerticalOptions="Center"
+                                                       HorizontalOptions="Center"/>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </RefreshView>
+        </Grid>
+        <!--#endregion-->
+        
+        <!--#region Filters -->
+        <ScrollView WidthRequest="220" BackgroundColor="#aa333333"
+                    Padding="5"
+                    IsVisible="{Binding PanelVisibility}">
+            <StackLayout BindableLayout.ItemsSource="{Binding Genres}" >
+                <BindableLayout.EmptyViewTemplate>
+                    <DataTemplate>
+                        <Label Text="No Genres" />
+                    </DataTemplate>
+                </BindableLayout.EmptyViewTemplate>
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="auto,*"
+                              x:DataType="model:GenreBool"
+                              Padding="5">
+                            <CheckBox Grid.Column="0" IsChecked="{Binding Bool}" />
+                            <Label Grid.Column="1" Text="{Binding Genre.Name}"/>
+                            <!--Error Value not changing-->
+                            <Label Grid.Row="1" Text="{Binding Bool}"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </ScrollView>
+        <!--#endregion-->
+
+
+    </StackLayout>
+
+    
+</ContentPage>

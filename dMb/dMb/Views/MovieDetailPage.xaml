@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:dMb.ViewModels"
+             xmlns:model="clr-namespace:dMb.Models"
+             x:Class="dMb.Views.MovieDetailPage"
+             x:DataType="local:MovieDetailViewModel"
+             Title="{Binding Title}">
+
+    <Grid Padding="5, 5, 5, 10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        
+        <!--Immage Button-->
+        <ImageButton Grid.RowSpan="2" Grid.Column="0"
+                     HeightRequest="210" WidthRequest="140"
+                     Aspect="AspectFill"
+                     Source="{Binding MovieImgUrl}"
+                     Command="{Binding ChangeImgUrlCommand}"
+                     />
+
+        <!--Title-->
+        <Editor Grid.Row="0" Grid.Column="1"
+                Text="{Binding MovieTitle}"
+                FontSize="20"
+                />
+        
+        <!--Edit Date-->
+        <Label Grid.Row="1" Grid.Column="1"
+               Text="{Binding MovieEditDate}"
+               FontSize="20"
+               VerticalOptions="EndAndExpand"
+               />
+
+        <!--Genres-->
+        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2"
+                    BackgroundColor="Gray"
+                    AlignItems="Start"
+                    Wrap="Wrap"
+                    Direction="Column"
+                    JustifyContent="Start"
+                    Padding="5"
+                    BindableLayout.ItemsSource="{Binding Genres}"
+                    >
+            <!--<BindableLayout.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>1 One</x:String>
+                    <x:String>1 Two</x:String>
+                    <x:String>1 Three</x:String>
+                    <x:String>1 Four</x:String>
+                    <x:String>2 One</x:String>
+                    <x:String>2 Two</x:String>
+                    <x:String>2 Three</x:String>
+                    <x:String>2 Four</x:String>
+                    <x:String>3 One</x:String>
+                    <x:String>3 Two</x:String>
+                    <x:String>3 Three</x:String>
+                    <x:String>3 Four</x:String>
+                    <x:String>4 One</x:String>
+                    <x:String>4 Two</x:String>
+                    <x:String>4 Three</x:String>
+                    <x:String>4 Four</x:String>
+                </x:Array>
+            </BindableLayout.ItemsSource>-->
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="auto, *"
+                          x:DataType="model:GenreBool">
+                        <CheckBox Grid.Column="0" 
+                                  IsChecked="{Binding Bool}"
+                                  VerticalOptions="Center" HorizontalOptions="Center"/>
+                        <Label Grid.Column="1" 
+                               Text="{Binding Genre.Name}" 
+                               VerticalOptions="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+            
+        </FlexLayout>
+
+
+        
+
+
+        <!--Details-->
+        <Editor Grid.Row="3" Grid.ColumnSpan="2"
+                Text="{Binding MovieDetails}" 
+                FontSize="16" 
+                />
+        
+        
+        <!--Delete Button-->
+        <Button Grid.Row="4" Grid.Column="0"
+                Text="Delete"
+                Command="{Binding DeleteMovieCommand}"
+                />
+        
+        <!--Save Button-->
+        <Button Grid.Row="4" Grid.Column="1"
+                Text="Save"
+                Command="{Binding SaveMovieCommand}"
+                />
+
+
+    </Grid>
+    
+</ContentPage>

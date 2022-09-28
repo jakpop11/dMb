@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:view="clr-namespace:dMb.Views"
+       Title="dMb"
+       x:Class="dMb.AppShell">
+
+    <FlyoutItem Title="Browse" >
+        <ShellContent Route="MoviesPage" ContentTemplate="{DataTemplate view:MoviesPage}" />
+    </FlyoutItem>
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
+        <ShellContent Title="Settings" Route="SettingsPage" ContentTemplate="{DataTemplate view:SettingsPage}" />
+        <ShellContent Title="About" Route="AboutPage" ContentTemplate="{DataTemplate view:AboutPage}" />
+    </FlyoutItem>
+    
+    <!--TEMP-->
+    <FlyoutItem Title="Edit" >
+        <ShellContent Route="MovieDetailPage" ContentTemplate="{DataTemplate view:MovieDetailPage}" />
+    </FlyoutItem>
+
+</Shell>
