@@ -20,17 +20,18 @@
         
         <!--#region Movies -->
         <Grid RowDefinitions="40, *">
-            <SearchBar Grid.Row="0" Placeholder="Search ..." />
+            <SearchBar Grid.Row="0" Placeholder="Search ..." 
+                       Text="{Binding Search}" />
             <RefreshView Grid.Row="1"
                          Command="{Binding LoadMoviesCommand}"
                          IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
                 <CollectionView ItemsSource="{Binding Movies}"
                             SelectionMode="None" >
-                    <CollectionView.EmptyViewTemplate>
-                        <DataTemplate>
-                            <Label Text="No movies" />
-                        </DataTemplate>
-                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="No matching movies" 
+                               HorizontalTextAlignment="Center"
+                               FontSize="24" />
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid RowDefinitions="*, auto, auto" ColumnDefinitions="80, *"
@@ -91,11 +92,11 @@
                     Padding="5"
                     IsVisible="{Binding PanelVisibility}">
             <StackLayout BindableLayout.ItemsSource="{Binding Genres}" >
-                <BindableLayout.EmptyViewTemplate>
+                <BindableLayout.EmptyView>
                     <DataTemplate>
                         <Label Text="No Genres" />
                     </DataTemplate>
-                </BindableLayout.EmptyViewTemplate>
+                </BindableLayout.EmptyView>
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <Grid ColumnDefinitions="auto,*"

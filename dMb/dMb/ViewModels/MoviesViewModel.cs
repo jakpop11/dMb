@@ -20,6 +20,8 @@ namespace dMb.ViewModels
 
         bool _panelVisibility = false;
 
+        string _Search;
+
         string selectedGenres = string.Empty;
 
 
@@ -37,6 +39,18 @@ namespace dMb.ViewModels
         {
             get => _panelVisibility;
             set => SetProperty(ref _panelVisibility, value);
+        }
+
+        public string Search
+        {
+            get => _Search;
+            set
+            {
+                SetProperty(ref _Search, value);
+
+                // Refresh Movie List
+                IsBusy = true; // can be moved to SearchBarCommand for better performence?
+            }
         }
 
 
@@ -80,7 +94,7 @@ namespace dMb.ViewModels
                 Movies.Clear();
 
                 // Get Movies default or by criteria (search & filters) if there are any
-                var movies = (string.IsNullOrWhiteSpace("") && string.IsNullOrWhiteSpace(selectedGenres))? await App.Database.GetMoviesAsync() : await App.Database.GetMoviesAsync("", selectedGenres);
+                var movies = (string.IsNullOrWhiteSpace(Search) && string.IsNullOrWhiteSpace(selectedGenres))? await App.Database.GetMoviesAsync() : await App.Database.GetMoviesAsync(Search, selectedGenres);
 
                 foreach(var movie in movies)
                 {
@@ -124,8 +138,8 @@ namespace dMb.ViewModels
                 // Update selected genres
                 UpdateFilters();
 
-                // Load Movies
-                IsBusy = true; // should execute only if filters changed
+                // Refresh Movie List
+                IsBusy = true; // for better performance should execute only if filters changed
             }
             else PanelVisibility = true;
 
@@ -178,10 +192,10 @@ namespace dMb.ViewModels
                 if (genre.Bool) selectedGenres += $"{genre.Genre.Id}, ";
                 //else if (genre.State == ...) selectedGenres2 += $"{genre.Genre.Id}, ";
             }
-            // Delete last comma and close brackets
             try
             {
                 // if none of genres were selected then it will throw an error trying to do this
+                // Delete last comma and close brackets
                 selectedGenres = selectedGenres.Remove(selectedGenres.Length - 2) + ")";
 
             }

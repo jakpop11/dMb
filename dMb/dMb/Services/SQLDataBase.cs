@@ -58,11 +58,13 @@ namespace dMb.Services
             string query = qBuilder
                 .SELECT("*", "COUNT(*)")
                 .FROM(nameof(Movie))
-                .JOIN(nameof(MovieGenres), nameof(Movie.Id), nameof(MovieGenres.MovieId))
+                .LEFT_JOIN(nameof(MovieGenres), nameof(Movie.Id), nameof(MovieGenres.MovieId))
                 .WHERE(conditions)
                 .GROUP_BY(nameof(Movie.Id))
                 .ORDER_BY("COUNT(*)", false)
                 .GetQuery().ToString();
+
+            System.Diagnostics.Debug.WriteLine($"Query: {query}");
 
             // Get Movies with criterias
             return database.QueryAsync<Movie>(query);
