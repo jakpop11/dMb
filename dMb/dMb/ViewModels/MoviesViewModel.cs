@@ -76,6 +76,10 @@ namespace dMb.ViewModels
             try
             {
                 Movies.Clear();
+
+                // Get Movies by criteria (search & filters)
+                //
+
                 var movies = await App.Database.GetMoviesAsync();
 
                 foreach(var movie in movies)
@@ -107,8 +111,7 @@ namespace dMb.ViewModels
                 return;
             }
 
-            //await Shell.Current.GoToAsync(nameof(MovieDetailPage));
-
+            // Go to Page of selected movie
             await Shell.Current.GoToAsync($"{nameof(MovieDetailPage)}?{nameof(MovieDetailViewModel.Id)}={movie.Id}");
         }
 
@@ -116,11 +119,12 @@ namespace dMb.ViewModels
         {
             if (PanelVisibility) PanelVisibility = false;
             else PanelVisibility = true;
-
-            // TEST
-            TempVoid();
         }
 
+        /// <summary>
+        /// Generate list of genres with default state (Bool = false)
+        /// </summary>
+        /// <returns></returns>
         async Task LoadGenres()
         {
             try
@@ -143,25 +147,20 @@ namespace dMb.ViewModels
 
         public void OnAppearing()
         {
+            // Refresh list of Movies
             IsBusy = true;
             SelectedMovie = null;
 
-            //LoadGenres();
-
         }
+
+
+
 
 
         // TEMP TEST
         void TempVoid()
         {
-            //System.Diagnostics.Debug.WriteLine($"{Genres[0].Genre.Name}: {Genres[0].Bool}");
-            //System.Diagnostics.Debug.WriteLine($"{Genres[3].Genre.Name}: {Genres[3].Bool}");
 
-            //System.IO.File.WriteAllText(App.LocalPath, "Hello World from txt");
-            //System.Diagnostics.Debug.WriteLine($"Write to file: {App.LocalPath}");
-
-            //var text = System.IO.File.ReadAllText(App.LocalPath);
-            //System.Diagnostics.Debug.WriteLine($"In File: {text}");
 
         }
 

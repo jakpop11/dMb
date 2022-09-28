@@ -106,23 +106,6 @@ namespace dMb.Services
 
         public Task<List<Genre>> GetGenresAsync(int movieId)
         {
-            //List<MovieGenres> tmpMG = database.Table<MovieGenres>()
-            //    .Where(mg => mg.MovieId == movieId)
-            //    .ToListAsync().Result;
-            //List<int> genreIdList = new List<int>();
-            //foreach(var mg in tmpMG)
-            //{
-            //    genreIdList.Add(mg.GenreId);
-            //}
-
-
-            // Get Genres related to movie
-            //return database.Table<Genre>()
-            //    .Where(g => genreIdList.Contains(g.Id))
-            //    .ToListAsync();
-
-
-
             QBuilder qBuilder = new QBuilder();
             string query = qBuilder
                 .SELECT()
@@ -196,7 +179,7 @@ namespace dMb.Services
 
         private Task<int> DeleteGenreAsync(Genre genre)
         {
-            // Update MovieGEnres Table
+            // Update MovieGenres Table
             DeleteMovieGenresAsync(genre);
 
             // Delete genre
@@ -225,17 +208,6 @@ namespace dMb.Services
 
         private async void DeleteMovieGenresAsync(Movie movie)
         {
-            //List<MovieGenres> moviegenres = await database.Table<MovieGenres>()
-            //    .Where(mg => mg.MovieId == movie.Id)
-            //    .ToListAsync();
-
-            //// Delete all MovieGenres related to movie
-            //foreach (var mg in moviegenres)
-            //{
-            //    DeleteMovieGenreAsync(mg);
-            //}
-
-
             QBuilder qBuilder = new QBuilder();
             string query = qBuilder
                 .DELETE()
@@ -257,17 +229,6 @@ namespace dMb.Services
 
         private async void DeleteMovieGenresAsync(Genre genre)
         {
-            //List<MovieGenres> moviegenres = await database.Table<MovieGenres>()
-            //    .Where(mg => mg.GenreId == genre.Id)
-            //    .ToListAsync();
-
-            //// Delete all MovieGenres related to movie
-            //foreach (var mg in moviegenres)
-            //{
-            //    DeleteMovieGenreAsync(mg);
-            //}
-
-
             QBuilder qBuilder = new QBuilder();
             string query = qBuilder
                 .DELETE()
