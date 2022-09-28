@@ -30,7 +30,7 @@ namespace dMb.Services
 
             if (database.Table<Genre>().CountAsync().Result == 0)
             {
-                GenerateGenresAsync().Wait(); // shoul'd be called only on file creation
+                GenerateGenresAsync().Wait(); // should be called only on file creation
             }
 
         }
@@ -45,8 +45,28 @@ namespace dMb.Services
                 .ToListAsync();
         }
 
-        // GetMovies(criteria)
-        //
+        public Task<List<Movie>> GetMoviesAsync(string title = "", string inGenres = "")
+        {
+            string conditions = $"{nameof(Movie.Title)} LIKE '%{title}%'";
+
+            if (!string.IsNullOrWhiteSpace(inGenres))
+            {
+                conditions += $" AND {nameof(MovieGenres.GenreId)} IN {inGenres}";
+            }
+
+            QBuilder qBuilder = new QBuilder();
+            string query = qBuilder
+                .SELECT("*", "COUNT(*)")
+                .FROM(nameof(Movie))
+                .JOIN(nameof(MovieGenres), nameof(Movie.Id), nameof(MovieGenres.MovieId))
+                .WHERE(conditions)
+                .GROUP_BY(nameof(Movie.Id))
+                .ORDER_BY("COUNT(*)", false)
+                .GetQuery().ToString();
+
+            // Get Movies with criterias
+            return database.QueryAsync<Movie>(query);
+        }
 
 
         public Task<Movie> GetMovieAsync(int id)

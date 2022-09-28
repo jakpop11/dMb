@@ -20,6 +20,8 @@ namespace dMb.ViewModels
 
         bool _panelVisibility = false;
 
+        string selectedGenres = string.Empty;
+
 
         public Movie SelectedMovie
         {
@@ -77,10 +79,8 @@ namespace dMb.ViewModels
             {
                 Movies.Clear();
 
-                // Get Movies by criteria (search & filters)
-                //
-
-                var movies = await App.Database.GetMoviesAsync();
+                // Get Movies default or by criteria (search & filters) if there are any
+                var movies = (string.IsNullOrWhiteSpace("") && string.IsNullOrWhiteSpace(selectedGenres))? await App.Database.GetMoviesAsync() : await App.Database.GetMoviesAsync("", selectedGenres);
 
                 foreach(var movie in movies)
                 {
@@ -117,8 +117,21 @@ namespace dMb.ViewModels
 
         void TogglePanelVisibility()
         {
-            if (PanelVisibility) PanelVisibility = false;
+            if (PanelVisibility)
+            {
+                PanelVisibility = false;
+
+                // Update selected genres
+                UpdateFilters();
+
+                // Load Movies
+                IsBusy = true; // should execute only if filters changed
+            }
             else PanelVisibility = true;
+
+
+            // For TESTs
+            TempVoid();
         }
 
         /// <summary>
@@ -154,6 +167,32 @@ namespace dMb.ViewModels
         }
 
 
+        private void UpdateFilters()
+        {
+            selectedGenres = "(";
+            // same for not included genres
+            // selectedGenres2 = "('type', 'type')";
+
+            foreach(var genre in Genres)
+            {
+                if (genre.Bool) selectedGenres += $"{genre.Genre.Id}, ";
+                //else if (genre.State == ...) selectedGenres2 += $"{genre.Genre.Id}, ";
+            }
+            // Delete last comma and close brackets
+            try
+            {
+                // if none of genres were selected then it will throw an error trying to do this
+                selectedGenres = selectedGenres.Remove(selectedGenres.Length - 2) + ")";
+
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to UpdateFilters. Returned an Empty string.");
+                selectedGenres = string.Empty;
+            }
+
+        }
+
 
 
 
@@ -161,7 +200,7 @@ namespace dMb.ViewModels
         void TempVoid()
         {
 
-
+            System.Diagnostics.Debug.WriteLine($"Selected Genres as string: {selectedGenres}");
         }
 
 
