@@ -112,7 +112,7 @@
                                 <Label Grid.Column="1" Text="{Binding Genre.Name}"/>
                                 
                                 <!--Error Value not changing-->
-                                <Label Grid.Row="1" Text="{Binding Bool}"/>
+                                <!--<Label Grid.Row="1" Text="{Binding Bool}"/>-->
 
                             </Grid>
                         </DataTemplate>
