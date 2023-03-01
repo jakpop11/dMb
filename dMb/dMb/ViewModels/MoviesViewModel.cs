@@ -84,6 +84,8 @@ namespace dMb.ViewModels
             ResetFiltersCommand = new Command(ResetFilters);
 
             LoadGenres();
+            LoadMovies();
+
         }
 
 
@@ -190,7 +192,7 @@ namespace dMb.ViewModels
         public void OnAppearing()
         {
             // Refresh list of Movies
-            IsBusy = true;
+            //IsBusy = true; // Don't refresh list when user comes back from MovieDetailsPage
             SelectedMovie = null;
 
         }

@@ -43,7 +43,9 @@
                />
 
         <!--Genres-->
-        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2"
+
+        <ScrollView Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <FlexLayout 
                     BackgroundColor="Gray"
                     AlignItems="Start"
                     Wrap="Wrap"
@@ -52,7 +54,7 @@
                     Padding="5"
                     BindableLayout.ItemsSource="{Binding Genres}"
                     >
-            <!--<BindableLayout.ItemsSource>
+                <!--<BindableLayout.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>1 One</x:String>
                     <x:String>1 Two</x:String>
@@ -72,24 +74,34 @@
                     <x:String>4 Four</x:String>
                 </x:Array>
             </BindableLayout.ItemsSource>-->
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="auto, *"
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" 
+                                         x:DataType="model:GenreBool">
+                            <CheckBox IsChecked="{Binding Bool}"
+                                          VerticalOptions="Center" HorizontalOptions="Center"/>
+                            <Label Text="{Binding Genre.Name}"
+                                       VerticalOptions="Center"/>
+
+                        </StackLayout>
+
+                        <!--<Grid ColumnDefinitions="auto, *"
                           x:DataType="model:GenreBool">
-                        <CheckBox Grid.Column="0" 
+                            <CheckBox Grid.Column="0" 
                                   IsChecked="{Binding Bool}"
                                   VerticalOptions="Center" HorizontalOptions="Center"/>
-                        <Label Grid.Column="1" 
+                            <Label Grid.Column="1" 
+                                   FontSize="20"
                                Text="{Binding Genre.Name}" 
                                VerticalOptions="Center"/>
-                    </Grid>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-            
-        </FlexLayout>
+                        </Grid>-->
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+
+            </FlexLayout>
+        </ScrollView>
 
 
-        
 
 
         <!--Details-->
