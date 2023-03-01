@@ -82,29 +82,34 @@ namespace dMb.Services
 
         public Task<int> SaveMovieAsync(Movie movie)
         {
-            if (movie.Id != 0)
+            try
             {
-                // Update MovieGenres Table
-                DeleteMovieGenresAsync(movie);
 
+                if (movie.Id != 0)
+                {
+                    // Update MovieGenres Table
+                    DeleteMovieGenresAsync(movie);
+
+                    // Update existing Movie
+                    return database.UpdateAsync(movie);
+                }
+                else
+                {
+
+                    // Add new Movie
+                    var result = database.InsertAsync(movie);
+                    result.Wait();
+                    return result;
+                }
+            }
+            // is this best way to get inserted movie id
+            finally
+            {
                 // Insert selected Genres to Table
                 foreach (var g in movie.Genres)
                 {
                     AddMovieGenreAsync(new MovieGenres() { MovieId = movie.Id, GenreId = g.Id });
                 }
-
-
-                // Update existing Movie
-                return database.UpdateAsync(movie);
-            }
-            else
-            {
-                // How to get Id of movie after inserting it to Table?
-                //
-
-
-                // Add new Movie
-                return database.InsertAsync(movie);
             }
         }
 
@@ -164,16 +169,28 @@ namespace dMb.Services
                 new Genre{ Name="Movie" },
                 new Genre{ Name="Series" },
                 new Genre{ Name="Comic" },
+
                 new Genre{ Name="Anime" },
                 new Genre{ Name="Animated" },
+
                 new Genre{ Name="Action" },
                 new Genre{ Name="Adventure" },
+                new Genre{ Name="Comedy" },
+                new Genre{ Name="Crime" },
+                new Genre{ Name="Disaster" },
                 new Genre{ Name="Drama" },
                 new Genre{ Name="Fantasy" },
+                new Genre{ Name="History" },
                 new Genre{ Name="Horror" },
+                new Genre{ Name="Isekai" },
                 new Genre{ Name="Music" },
                 new Genre{ Name="Mystery" },
+                new Genre{ Name="Psychological" },
+                new Genre{ Name="Romance" },
                 new Genre{ Name="Sci-Fi" },
+                new Genre{ Name="Slice of Life" },
+                new Genre{ Name="Sports" },
+                new Genre{ Name="Thriller" },
                 new Genre{ Name="???" }
             };
 
