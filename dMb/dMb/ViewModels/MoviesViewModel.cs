@@ -23,6 +23,7 @@ namespace dMb.ViewModels
         string _Search;
 
         string selectedGenres = string.Empty;
+        string notSelectedGenres = string.Empty; // Watched, Anime, Action
 
 
         public Movie SelectedMovie
@@ -83,8 +84,9 @@ namespace dMb.ViewModels
             FilterClickCommand = new Command(TogglePanelVisibility);
             ResetFiltersCommand = new Command(ResetFilters);
 
+            // Loading
+            IsBusy = true;
             LoadGenres();
-            LoadMovies();
 
         }
 
@@ -99,7 +101,7 @@ namespace dMb.ViewModels
                 Movies.Clear();
 
                 // Get Movies default or by criteria (search & filters) if there are any
-                var movies = (string.IsNullOrWhiteSpace(Search) && string.IsNullOrWhiteSpace(selectedGenres))? await App.Database.GetMoviesAsync() : await App.Database.GetMoviesAsync(Search, selectedGenres);
+                var movies = await App.Database.GetMoviesAsync(Search, selectedGenres, notSelectedGenres);
 
                 foreach(var movie in movies)
                 {

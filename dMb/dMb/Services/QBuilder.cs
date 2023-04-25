@@ -1,6 +1,6 @@
 ﻿using System;
-
 using System.Linq;
+using System.Collections.Generic;
 
 
 
@@ -170,6 +170,22 @@ namespace dMb.Services
 
             _product._order = order;
             return this;
+        }
+
+        static public string ConditionsListToString(List<string> conditions)
+        {
+            if (conditions.Count == 0) return "";
+
+            string result = string.Empty;
+            foreach (string condition in conditions)
+            {
+                result += $"{condition} AND ";
+            }
+
+            // Remove last AND
+            result = result.Remove(result.Length - 4);
+
+            return result;
         }
 
 

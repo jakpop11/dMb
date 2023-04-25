@@ -39,26 +39,53 @@ namespace dMb.Services
         #region Movies
         public Task<List<Movie>> GetMoviesAsync()
         {
-            // Get all Movies
-            return database.Table<Movie>()
+            return database
+                .Table<Movie>()
                 .OrderByDescending(m => m.Id)
                 .ToListAsync();
         }
 
-        public Task<List<Movie>> GetMoviesAsync(string title = "", string inGenres = "")
-        {
-            string conditions = $"{nameof(Movie.Title)} LIKE '%{title}%'";
 
+        public Task<List<Movie>> GetMoviesAsync(string title = "", string inGenres = "", string notGenres = "")
+        {
+            QBuilder qBuilder = new QBuilder();
+
+            List<string> conditionsList = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                conditionsList.Add($"{nameof(Movie.Title)} LIKE '%{title}%'");
+                System.Diagnostics.Debug.WriteLine($"Title: {title}");
+            }
+            
             if (!string.IsNullOrWhiteSpace(inGenres))
             {
-                conditions += $" AND {nameof(MovieGenres.GenreId)} IN {inGenres}";
+                conditionsList.Add($"{nameof(MovieGenres.GenreId)} IN {inGenres}");
+                System.Diagnostics.Debug.WriteLine($"Included Genres: {inGenres}");
             }
 
-            QBuilder qBuilder = new QBuilder();
+            if (!string.IsNullOrWhiteSpace(notGenres))
+            {
+                string innerQuery = qBuilder
+                    .SELECT(nameof(MovieGenres.MovieId))
+                    .FROM(nameof(MovieGenres))
+                    .WHERE($"{nameof(MovieGenres.GenreId)} IN {notGenres}")
+                    .GROUP_BY(nameof(MovieGenres.MovieId))
+                    .GetQuery().ToString();
+
+                conditionsList.Add($"{nameof(MovieGenres.MovieId)} NOT IN ({innerQuery})");
+                System.Diagnostics.Debug.WriteLine($"NOT included Genres: {notGenres}");
+            }
+
+            // Return basic query results
+            if (conditionsList.Count == 0) return GetMoviesAsync();
+
+            string conditions = QBuilder.ConditionsListToString(conditionsList);
+
             string query = qBuilder
                 .SELECT("*", "COUNT(*)")
                 .FROM(nameof(Movie))
-                .LEFT_JOIN(nameof(MovieGenres), nameof(Movie.Id), nameof(MovieGenres.MovieId))
+                .LEFT_JOIN(nameof(MovieGenres), nameof(MovieGenres.MovieId), nameof(Movie.Id))
                 .WHERE(conditions)
                 .GROUP_BY(nameof(Movie.Id))
                 .ORDER_BY("COUNT(*)", false)
@@ -287,6 +314,7 @@ namespace dMb.Services
 
         }
         #endregion
+
 
     }
 }
