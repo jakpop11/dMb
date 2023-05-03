@@ -6,6 +6,7 @@
              Title="{Binding Title}"
              xmlns:local="clr-namespace:dMb.ViewModels"
              xmlns:model="clr-namespace:dMb.Models"
+             xmlns:ctrls="clr-namespace:dMb.Controls"
              x:Name="BrowseMoviesPage" >
 
     
@@ -106,10 +107,10 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Grid ColumnDefinitions="auto,*"
-                              x:DataType="model:GenreBool"
-                              Padding="5">
-                                <CheckBox Grid.Column="0" IsChecked="{Binding Bool}" />
-                                <Label Grid.Column="1" Text="{Binding Genre.Name}"/>
+                              x:DataType="model:GenreBool">
+                                <ctrls:CheckBox Grid.Column="0" IsChecked="{Binding Bool}" Margin="-5, -5"/>
+                                <Label Grid.Column="1" Text="{Binding Genre.Name}" 
+                                       VerticalOptions="Center"/>
                                 
                                 <!--Error Value not changing-->
                                 <!--<Label Grid.Row="1" Text="{Binding Bool}"/>-->
