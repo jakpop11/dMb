@@ -9,7 +9,7 @@ namespace dMb.Controls
 {
     public abstract partial class BaseCheckBox : Grid, INotifyPropertyChanged
     {
-        protected static double _minSize = 25;
+        protected static double _minSize = 16;
 
         #region Fields
         protected Path outlineBox = new Path
