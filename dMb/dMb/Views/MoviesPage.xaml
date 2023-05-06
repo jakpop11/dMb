@@ -95,7 +95,7 @@
             <StackLayout>
                 
                 <!--UnCheck Filters-->
-                <!--<Button IsEnabled="False" Text="Reset" Command="{Binding ResetFiltersCommand}" />-->
+                <Button Text="Reset" Command="{Binding ResetFiltersCommand}" />
 
 
                 <StackLayout BindableLayout.ItemsSource="{Binding Genres}" >
@@ -107,8 +107,8 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Grid ColumnDefinitions="auto,*"
-                              x:DataType="model:GenreBool">
-                                <ctrls:CheckBox Grid.Column="0" IsChecked="{Binding Bool}" Margin="-5, -5"/>
+                              x:DataType="model:GenreState">
+                                <ctrls:StateCheckBox Grid.Column="0" State="{Binding State}" Margin="-5, -5"/>
                                 <Label Grid.Column="1" Text="{Binding Genre.Name}" 
                                        VerticalOptions="Center"/>
                                 

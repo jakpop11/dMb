@@ -4,12 +4,13 @@ using System.Text;
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using dMb.Services;
 
 
 
 namespace dMb.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : PropertyChangedHelper
     {
 
         bool isBusy = false;
@@ -28,32 +29,5 @@ namespace dMb.ViewModels
             set => SetProperty(ref title, value);
         }
 
-
-
-
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 }

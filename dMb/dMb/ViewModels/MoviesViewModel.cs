@@ -4,6 +4,7 @@ using System.Text;
 
 using dMb.Models;
 using dMb.Views;
+using dMb.Controls;
 using dMb.Services;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
@@ -23,7 +24,7 @@ namespace dMb.ViewModels
         string _Search;
 
         string selectedGenres = string.Empty;
-        string notSelectedGenres = string.Empty; // Watched, Anime, Action
+        string excludedGenres = string.Empty;
 
 
         public Movie SelectedMovie
@@ -57,7 +58,7 @@ namespace dMb.ViewModels
 
         public ObservableCollection<Movie> Movies { get; }
 
-        public ObservableCollection<GenreBool> Genres { get; }
+        public ObservableCollection<GenreState> Genres { get; }
 
 
         public Command LoadMoviesCommand { get; }
@@ -76,7 +77,7 @@ namespace dMb.ViewModels
         {
             Title = "Browse";
             Movies = new ObservableCollection<Movie>();
-            Genres = new ObservableCollection<GenreBool>();
+            Genres = new ObservableCollection<GenreState>();
 
             LoadMoviesCommand = new Command(async () => await LoadMovies());
             AddMovieCommand = new Command(AddMovie);
@@ -101,7 +102,7 @@ namespace dMb.ViewModels
                 Movies.Clear();
 
                 // Get Movies default or by criteria (search & filters) if there are any
-                var movies = await App.Database.GetMoviesAsync(Search, selectedGenres, notSelectedGenres);
+                var movies = await App.Database.GetMoviesAsync(Search, selectedGenres, excludedGenres);
 
                 foreach(var movie in movies)
                 {
@@ -168,7 +169,8 @@ namespace dMb.ViewModels
 
                 foreach (var genre in genres)
                 {
-                    Genres.Add(new GenreBool { Genre = genre, Bool = false });
+                    //Genres.Add(new GenreState { Genre = genre, State = StateCheckBox.CheckBoxState.Unchecked});
+                    Genres.Add(new GenreState(genre, StateCheckBox.CheckBoxState.Unchecked));
                 }
             }
             catch (Exception e)
@@ -181,7 +183,7 @@ namespace dMb.ViewModels
         {
             foreach(var gb in Genres)
             {
-                gb.Bool = false;
+                gb.State = StateCheckBox.CheckBoxState.Unchecked;
             }
 
             // No response from UI
@@ -208,7 +210,7 @@ namespace dMb.ViewModels
 
             foreach(var genre in Genres)
             {
-                if (genre.Bool) selectedGenres += $"{genre.Genre.Id}, ";
+                if (genre.State == StateCheckBox.CheckBoxState.Checked) selectedGenres += $"{genre.Genre.Id}, ";
                 //else if (genre.State == ...) selectedGenres2 += $"{genre.Genre.Id}, ";
             }
             try
@@ -234,6 +236,7 @@ namespace dMb.ViewModels
         {
 
             System.Diagnostics.Debug.WriteLine($"Selected Genres as string: {selectedGenres}");
+            System.Diagnostics.Debug.WriteLine($"Excluded Genres as string: {excludedGenres}");
         }
 
 

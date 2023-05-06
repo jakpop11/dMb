@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace dMb.Services
 {
-    public class PropertyChangedHelper
+    public class PropertyChangedHelper : INotifyPropertyChanged
     {
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
@@ -37,4 +37,23 @@ namespace dMb.Services
         #endregion
     }
 
+    public class ObservableObject : PropertyChangedHelper
+    {
+        private object _object;
+
+        public object Object
+        {
+            get => _object;
+            set
+            {
+                SetProperty(ref _object, value);
+            }
+        }
+
+
+        public ObservableObject(object obj)
+        {
+            Object = obj;
+        }
+    }
 }

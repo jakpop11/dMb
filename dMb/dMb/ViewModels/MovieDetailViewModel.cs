@@ -200,7 +200,7 @@ namespace dMb.ViewModels
 
                 foreach (var genre in genres)
                 {
-                    Genres.Add(new GenreBool { Genre = genre, Bool = movieGenres.Any(g => g.Id == genre.Id) });
+                    Genres.Add(new GenreBool(genre, movieGenres.Any(g => g.Id == genre.Id)));
                 }
             }
             catch (Exception e)
