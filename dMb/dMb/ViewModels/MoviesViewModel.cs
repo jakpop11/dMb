@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 using dMb.Models;
 using dMb.Views;
 using dMb.Controls;
-using dMb.Services;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Essentials;
@@ -23,8 +21,9 @@ namespace dMb.ViewModels
 
         string _Search;
 
-        string selectedGenres = string.Empty;
-        string excludedGenres = string.Empty;
+
+        List<Genre> includedGenres;
+        List<Genre> excludedGenres;
 
 
         public Movie SelectedMovie
@@ -79,6 +78,9 @@ namespace dMb.ViewModels
             Movies = new ObservableCollection<Movie>();
             Genres = new ObservableCollection<GenreState>();
 
+            includedGenres = new List<Genre>();
+            excludedGenres = new List<Genre>();
+
             LoadMoviesCommand = new Command(async () => await LoadMovies());
             AddMovieCommand = new Command(AddMovie);
             ItemTappedCommand = new Command<Movie>(SelectMovie);
@@ -102,7 +104,7 @@ namespace dMb.ViewModels
                 Movies.Clear();
 
                 // Get Movies default or by criteria (search & filters) if there are any
-                var movies = await App.Database.GetMoviesAsync(Search, selectedGenres, excludedGenres);
+                var movies = await App.Database.GetMoviesAsync(Search, includedGenres, excludedGenres);
 
                 foreach(var movie in movies)
                 {
@@ -150,14 +152,20 @@ namespace dMb.ViewModels
                 IsBusy = true; // for better performance should execute only if filters changed
             }
             else PanelVisibility = true;
-
-
-            // For TESTs
-            TempVoid();
         }
 
+        void ResetFilters()
+        {
+            foreach (var gb in Genres)
+            {
+                gb.State = StateCheckBox.CheckBoxState.Unchecked;
+            }
+
+        }
+
+
         /// <summary>
-        /// Generate list of genres with default state (Bool = false)
+        /// Generate list of genres with default state (State = StateCheckBox.CheckBoxState.Unchecked)
         /// </summary>
         /// <returns></returns>
         async Task LoadGenres()
@@ -169,7 +177,6 @@ namespace dMb.ViewModels
 
                 foreach (var genre in genres)
                 {
-                    //Genres.Add(new GenreState { Genre = genre, State = StateCheckBox.CheckBoxState.Unchecked});
                     Genres.Add(new GenreState(genre, StateCheckBox.CheckBoxState.Unchecked));
                 }
             }
@@ -179,17 +186,6 @@ namespace dMb.ViewModels
             }
         }
 
-        void ResetFilters()
-        {
-            foreach(var gb in Genres)
-            {
-                gb.State = StateCheckBox.CheckBoxState.Unchecked;
-            }
-
-            // No response from UI
-            //
-
-        }
 
 
 
@@ -204,42 +200,18 @@ namespace dMb.ViewModels
 
         private void UpdateFilters()
         {
-            selectedGenres = "(";
-            // same for not included genres
-            // selectedGenres2 = "('type', 'type')";
+            // Clear previous selections
+            includedGenres.Clear();
+            excludedGenres.Clear();
 
+            // Get included and excluded genres as lists
             foreach(var genre in Genres)
             {
-                if (genre.State == StateCheckBox.CheckBoxState.Checked) selectedGenres += $"{genre.Genre.Id}, ";
-                //else if (genre.State == ...) selectedGenres2 += $"{genre.Genre.Id}, ";
-            }
-            try
-            {
-                // if none of genres were selected then it will throw an error trying to do this
-                // Delete last comma and close brackets
-                selectedGenres = selectedGenres.Remove(selectedGenres.Length - 2) + ")";
-
-            }
-            catch(Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Failed to UpdateFilters. Returned an Empty string.");
-                selectedGenres = string.Empty;
+                if (genre.State == StateCheckBox.CheckBoxState.Checked) includedGenres.Add(genre.Genre);
+                else if (genre.State == StateCheckBox.CheckBoxState.Cross) excludedGenres.Add(genre.Genre);
             }
 
         }
 
-
-
-
-        // TEMP TEST
-        void TempVoid()
-        {
-
-            System.Diagnostics.Debug.WriteLine($"Selected Genres as string: {selectedGenres}");
-            System.Diagnostics.Debug.WriteLine($"Excluded Genres as string: {excludedGenres}");
-        }
-
-
-        // END
     }
 }

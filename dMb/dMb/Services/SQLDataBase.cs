@@ -46,7 +46,7 @@ namespace dMb.Services
         }
 
 
-        public Task<List<Movie>> GetMoviesAsync(string title = "", string inGenres = "", string notGenres = "")
+        public Task<List<Movie>> GetMoviesAsync(string title = "", List<Genre> includedGenres = null, List<Genre> excludedGenres = null)
         {
             QBuilder qBuilder = new QBuilder();
 
@@ -57,24 +57,26 @@ namespace dMb.Services
                 conditionsList.Add($"{nameof(Movie.Title)} LIKE '%{title}%'");
                 System.Diagnostics.Debug.WriteLine($"Title: {title}");
             }
-            
-            if (!string.IsNullOrWhiteSpace(inGenres))
+
+            if (includedGenres != null && includedGenres.Count != 0)
             {
-                conditionsList.Add($"{nameof(MovieGenres.GenreId)} IN {inGenres}");
-                System.Diagnostics.Debug.WriteLine($"Included Genres: {inGenres}");
+                string genres = ConvertGenreListToString(includedGenres);
+                conditionsList.Add($"{nameof(MovieGenres.GenreId)} IN {genres}");
+                System.Diagnostics.Debug.WriteLine($"Included Genres: {genres}");
             }
 
-            if (!string.IsNullOrWhiteSpace(notGenres))
+            if (excludedGenres != null && excludedGenres.Count != 0)
             {
+                string genres = ConvertGenreListToString(excludedGenres);
                 string innerQuery = qBuilder
                     .SELECT(nameof(MovieGenres.MovieId))
                     .FROM(nameof(MovieGenres))
-                    .WHERE($"{nameof(MovieGenres.GenreId)} IN {notGenres}")
+                    .WHERE($"{nameof(MovieGenres.GenreId)} IN {genres}")
                     .GROUP_BY(nameof(MovieGenres.MovieId))
                     .GetQuery().ToString();
 
                 conditionsList.Add($"{nameof(MovieGenres.MovieId)} NOT IN ({innerQuery})");
-                System.Diagnostics.Debug.WriteLine($"NOT included Genres: {notGenres}");
+                System.Diagnostics.Debug.WriteLine($"NOT included Genres: {genres}");
             }
 
             // Return basic query results
@@ -316,5 +318,21 @@ namespace dMb.Services
         #endregion
 
 
+        #region Helpers
+        private string ConvertGenreListToString(List<Genre> genres)
+        {
+            string result = "(";
+            foreach(var genre in genres)
+            {
+                result += $"{ genre.Id}, ";
+            }
+            // Delete last comma and close brackets
+            result = result.Remove(result.Length - 2) + ")";
+
+            return result;
+        }
+
+
+        #endregion
     }
 }
