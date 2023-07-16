@@ -13,7 +13,7 @@
         <Button Text="btn"/>
         <Switch />
 
-        <controls:StateCheckBox BoxColor="Aqua" IconColor="Red" IconGeometry="{Static controls:PredefinedShapes.CheckCircle}"/>
+        <controls:CustomCheckBox />
 
 
         <Button Text="Reset Genres" Command="{Binding ResetGenresCommand}"/>

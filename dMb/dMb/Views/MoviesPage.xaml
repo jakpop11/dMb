@@ -6,7 +6,6 @@
              Title="{Binding Title}"
              xmlns:local="clr-namespace:dMb.ViewModels"
              xmlns:model="clr-namespace:dMb.Models"
-             xmlns:ctrls="clr-namespace:dMb.Controls"
              x:Name="BrowseMoviesPage" >
 
     
@@ -21,18 +20,17 @@
         
         <!--#region Movies -->
         <Grid RowDefinitions="40, *">
-            <SearchBar Grid.Row="0" Placeholder="Search ..." 
-                       Text="{Binding Search}" />
+            <SearchBar Grid.Row="0" Placeholder="Search ..." />
             <RefreshView Grid.Row="1"
                          Command="{Binding LoadMoviesCommand}"
                          IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
                 <CollectionView ItemsSource="{Binding Movies}"
                             SelectionMode="None" >
-                    <CollectionView.EmptyView>
-                        <Label Text="No matching movies" 
-                               HorizontalTextAlignment="Center"
-                               FontSize="24" />
-                    </CollectionView.EmptyView>
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label Text="No movies" />
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid RowDefinitions="*, auto, auto" ColumnDefinitions="80, *"
@@ -92,30 +90,25 @@
         <ScrollView WidthRequest="220" BackgroundColor="#aa333333"
                     Padding="5"
                     IsVisible="{Binding PanelVisibility}">
-            <StackLayout>
-                
-                <!--UnCheck Filters-->
-                <Button Text="Reset" Command="{Binding ResetFiltersCommand}" />
+            <StackLayout BindableLayout.ItemsSource="{Binding Genres}" >
+                <BindableLayout.EmptyViewTemplate>
+                    <DataTemplate>
+                        <Label Text="No Genres" />
+                    </DataTemplate>
+                </BindableLayout.EmptyViewTemplate>
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="auto,*"
+                              x:DataType="model:GenreBool"
+                              Padding="5">
+                            <CheckBox Grid.Column="0" IsChecked="{Binding Bool}" />
+                            <Label Grid.Column="1" Text="{Binding Genre.Name}"/>
+                            <!--Error Value not changing-->
+                            <Label Grid.Row="1" Text="{Binding Bool}"/>
 
-
-                <StackLayout BindableLayout.ItemsSource="{Binding Genres}" >
-                    <BindableLayout.EmptyView>
-                        <DataTemplate>
-                            <Label Text="No Genres" />
-                        </DataTemplate>
-                    </BindableLayout.EmptyView>
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Grid ColumnDefinitions="auto,*"
-                              x:DataType="model:GenreState">
-                                <ctrls:StateCheckBox Grid.Column="0" State="{Binding State}" Margin="-5, -5"/>
-                                <Label Grid.Column="1" Text="{Binding Genre.Name}" 
-                                       VerticalOptions="Center"/>
-                                
-                            </Grid>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
             </StackLayout>
         </ScrollView>
         <!--#endregion-->

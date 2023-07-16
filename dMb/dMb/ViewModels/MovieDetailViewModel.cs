@@ -104,7 +104,6 @@ namespace dMb.ViewModels
                 Genres = selectedGenre
             };
 
-            // Instert or update Movie in Database
             await App.Database.SaveMovieAsync(newMovie);
 
 
@@ -132,13 +131,9 @@ namespace dMb.ViewModels
         {
             try
             {
-                // Display prompt to pass image url adress
                 string result = await Shell.Current.DisplayPromptAsync("Select URL for image", "Enter Url", "OK", "Cancel", placeholder: MovieImgUrl);
 
-                // On Cancel
                 if (result == null) return;
-
-                // On passing empty string
                 if (result == "")
                 {
                     result = "https://images5.fanpop.com/image/photos/29000000/Death-the-Kid-mtndewluver-29044843-225-350.jpg";
@@ -165,13 +160,11 @@ namespace dMb.ViewModels
 
                 if (movie == null)
                 {
-                    // Generate values for new movie
                     MovieImgUrl = "https://shinden.pl/res/other/placeholders/title/225x350.jpg";
                     MovieEditDate = DateTime.Now;
                 }
                 else
                 {
-                    // Generate values from selected movie
                     MovieId = movie.Id;
                     MovieTitle = movie.Title;
                     MovieImgUrl = movie.ImgUrl;
@@ -186,10 +179,6 @@ namespace dMb.ViewModels
             }
         }
 
-        /// <summary>
-        /// Genrate list of Genres with checked Bool
-        /// </summary>
-        /// <param name="movieID"></param>
         async void LoadGenres(int movieID)
         {
             try
@@ -200,7 +189,7 @@ namespace dMb.ViewModels
 
                 foreach (var genre in genres)
                 {
-                    Genres.Add(new GenreBool(genre, movieGenres.Any(g => g.Id == genre.Id)));
+                    Genres.Add(new GenreBool { Genre = genre, Bool = movieGenres.Any(g => g.Id == genre.Id) });
                 }
             }
             catch (Exception e)
