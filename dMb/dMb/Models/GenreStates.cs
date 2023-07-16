@@ -4,63 +4,54 @@
 
 namespace dMb.Models
 {
-    public enum State
+
+    public class GenreState : Services.PropertyChangedHelper
     {
-        UNCHECKED,
-        CHECKED,
-        CROSSED
-    }
+        private Genre _genre;
+        public Genre Genre
+        {
+            get => _genre;
+            set => SetProperty(ref _genre, value);
+        }
 
+        private Controls.StateCheckBox.CheckBoxState _state;
+        public Controls.StateCheckBox.CheckBoxState State
+        {
+            get => _state;
+            set => SetProperty(ref _state, value);
+        }
 
-
-    //public class GenreState : Services.PropertyChangedHelper
-    //{
-    //    State _state;
-
-
-    //    public Genre Genre { get; set; }
-
-    //    public State State
-    //    {
-    //        get => _state;
-    //        set => SetProperty(ref _state, value);
-    //    }
-    //}
-
-
-    //public class GenreBool : Services.PropertyChangedHelper
-    //{
-    //    bool _bool = false;
-
-    //    public Genre Genre { get; set; }
-
-    //    public bool Bool
-    //    {
-    //        get => _bool;
-    //        set => SetProperty(ref _bool, value);
-    //    }
-    //}
-
-
-
-    public class GenreState
-    {
-        public Genre Genre { get; set; }
-
-        public State State { get; set; }
+        public GenreState(Genre genre, Controls.StateCheckBox.CheckBoxState state)
+        {
+            Genre = genre;
+            State = state;
+        }
 
     }
 
 
-    public class GenreBool
+    public class GenreBool : Services.PropertyChangedHelper
     {
-        public Genre Genre { get; set; }
+        private Genre _genre;
+        public Genre Genre
+        {
+            get => _genre;
+            set => SetProperty(ref _genre, value);
+        }
 
-        public bool Bool { get; set; }
+        private bool _bool;
+        public bool Bool
+        {
+            get => _bool;
+            set => SetProperty(ref _bool, value);
+        }
+
+        public GenreBool(Genre genre, bool boolen)
+        {
+            Genre = genre;
+            Bool = boolen;
+        }
 
     }
-
-
-
 
 }

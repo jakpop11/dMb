@@ -1,6 +1,6 @@
 ﻿using System;
-
 using System.Linq;
+using System.Collections.Generic;
 
 
 
@@ -92,6 +92,51 @@ namespace dMb.Services
         }
 
 
+        public QBuilder LEFT_JOIN(string rTabName, string lId, string rId)
+        {
+            string join = $"LEFT JOIN {rTabName} ON {lId} = {rId}";
+            if (_product._join == null)
+            {
+                _product._join = join;
+                return this;
+            }
+
+
+            _product._join = String.Join(" ", _product._join, join);
+            return this;
+        }
+
+
+        public QBuilder RIGHT_JOIN(string rTabName, string lId, string rId)
+        {
+            string join = $"RIGHT JOIN {rTabName} ON {lId} = {rId}";
+            if (_product._join == null)
+            {
+                _product._join = join;
+                return this;
+            }
+
+
+            _product._join = String.Join(" ", _product._join, join);
+            return this;
+        }
+
+
+        public QBuilder FULL_JOIN(string rTabName, string lId, string rId)
+        {
+            string join = $"FULL JOIN {rTabName} ON {lId} = {rId}";
+            if (_product._join == null)
+            {
+                _product._join = join;
+                return this;
+            }
+
+
+            _product._join = String.Join(" ", _product._join, join);
+            return this;
+        }
+
+
         public QBuilder WHERE(string condition)
         {
             string where = $"WHERE {condition}";
@@ -125,6 +170,22 @@ namespace dMb.Services
 
             _product._order = order;
             return this;
+        }
+
+        static public string ConditionsListToString(List<string> conditions)
+        {
+            if (conditions.Count == 0) return "";
+
+            string result = string.Empty;
+            foreach (string condition in conditions)
+            {
+                result += $"{condition} AND ";
+            }
+
+            // Remove last AND
+            result = result.Remove(result.Length - 4);
+
+            return result;
         }
 
 

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:dMb.ViewModels"
              xmlns:model="clr-namespace:dMb.Models"
+             xmlns:ctrls="clr-namespace:dMb.Controls"
              x:Class="dMb.Views.MovieDetailPage"
              x:DataType="local:MovieDetailViewModel"
              Title="{Binding Title}">
@@ -43,16 +44,18 @@
                />
 
         <!--Genres-->
-        <FlexLayout Grid.Row="2" Grid.ColumnSpan="2"
+
+        <ScrollView Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <FlexLayout 
                     BackgroundColor="Gray"
                     AlignItems="Start"
                     Wrap="Wrap"
                     Direction="Column"
                     JustifyContent="Start"
-                    Padding="5"
+                    Padding="4"
                     BindableLayout.ItemsSource="{Binding Genres}"
                     >
-            <!--<BindableLayout.ItemsSource>
+                <!--<BindableLayout.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>1 One</x:String>
                     <x:String>1 Two</x:String>
@@ -72,24 +75,36 @@
                     <x:String>4 Four</x:String>
                 </x:Array>
             </BindableLayout.ItemsSource>-->
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="auto, *"
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" 
+                                     Padding="0, 0, 16, 0"
+                                     x:DataType="model:GenreBool">
+                            <ctrls:CheckBox IsChecked="{Binding Bool}"
+                                            Margin="0, -4, -10, -4"
+                                            VerticalOptions="Center" HorizontalOptions="Center"/>
+                            <Label Text="{Binding Genre.Name}"
+                                   VerticalOptions="Center"/>
+
+                        </StackLayout>
+
+                        <!--<Grid ColumnDefinitions="auto, *"
                           x:DataType="model:GenreBool">
-                        <CheckBox Grid.Column="0" 
+                            <CheckBox Grid.Column="0" 
                                   IsChecked="{Binding Bool}"
                                   VerticalOptions="Center" HorizontalOptions="Center"/>
-                        <Label Grid.Column="1" 
+                            <Label Grid.Column="1" 
+                                   FontSize="20"
                                Text="{Binding Genre.Name}" 
                                VerticalOptions="Center"/>
-                    </Grid>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-            
-        </FlexLayout>
+                        </Grid>-->
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+
+            </FlexLayout>
+        </ScrollView>
 
 
-        
 
 
         <!--Details-->
