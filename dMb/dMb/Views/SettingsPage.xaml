@@ -8,32 +8,32 @@
              x:DataType="local:SettingsViewModel"
              Title="{Binding Title}">
 
-    <StackLayout>
-        <Label Text="Here will be settings" />
-        <Button Text="btn"/>
-        <Switch />
+    <ScrollView>
+        <StackLayout Margin="4">
+            <Label Text="Here will be settings" />
+            <Label Text="{Binding FilePathDisplay}" FontSize="18"/>
+            <Button Text="btn"/>
+            <Switch />
 
-        <controls:StateCheckBox BoxColor="Aqua" IconColor="Red" IconGeometry="{Static controls:PredefinedShapes.CheckCircle}"/>
-
-
-        <Button Text="Reset Genres" Command="{Binding ResetGenresCommand}"/>
-        <Button Text="Pick File" Command="{Binding PickFileCommand}"/>
-        <Label Text="{Binding FilePathDisplay}" />
+            <controls:StateCheckBox BoxColor="Aqua" IconColor="Red" IconGeometry="{Static controls:PredefinedShapes.CheckCircle}"/>
 
 
-        <ScrollView Margin="20, 0">
-            <StackLayout BindableLayout.ItemsSource="{Binding MovieGenres}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <Grid ColumnDefinitions="auto,auto" x:DataType="model:MovieGenres">
-                            <Label Grid.Column="0" TextColor="GreenYellow" Text="{Binding MovieId}" />
-                            <Label Grid.Column="1" TextColor="Green" Text="{Binding GenreId}" />
-                        </Grid>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </StackLayout>
-            
-        </ScrollView>
+            <Button Text="Reset Genres" Command="{Binding ResetGenresCommand}"/>
+            <Button Text="Pick File" Command="{Binding PickFileCommand}"/>
 
-    </StackLayout>
+            <!--MoveiGenres Debug-->
+            <!--<ScrollView Margin="20, 0">
+                <StackLayout BindableLayout.ItemsSource="{Binding MovieGenres}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="auto,auto" x:DataType="model:MovieGenres">
+                                <Label Grid.Column="0" TextColor="GreenYellow" Text="{Binding MovieId}" />
+                                <Label Grid.Column="1" TextColor="Green" Text="{Binding GenreId}" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>-->
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

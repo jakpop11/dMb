@@ -17,7 +17,7 @@ namespace dMb.ViewModels
         string _FilePathDisplay = App.LocalPath;
 
 
-        public string FilePathDisplay { get => _FilePathDisplay; set => SetProperty(ref _FilePathDisplay, value); }
+        public string FilePathDisplay { get => $"Database path: {_FilePathDisplay}"; set => SetProperty(ref _FilePathDisplay, value); }
 
 
         public Command PickFileCommand { get; }
@@ -42,7 +42,7 @@ namespace dMb.ViewModels
         {
             var customFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
             {
-                {DevicePlatform.Android, new[] { "vnd.android.document/directory" }  }, // how to select directory???? //Mime type for Android
+                {DevicePlatform.Android, new[] { "image/jpeg" }  }, // how to select directory???? //Mime type for Android
                 {DevicePlatform.UWP, new[] { ".jpg" } } //? // extention for Windows
             });
 
@@ -62,7 +62,9 @@ namespace dMb.ViewModels
 
         async Task<int> ResetGenres()
         {
-            bool result = await Shell.Current.DisplayAlert("Are you sure?", "Do you want to reset genres and clear all data about them?", accept: "Yes, I'm sure", cancel: "No, keep them");
+            bool result = await Shell.Current.DisplayAlert(
+                "Are you sure?", "Do you want to reset genres and clear all data about them?", 
+                accept: "Yes, I'm sure", cancel: "No, keep them");
             if (result)
             {
                 return await App.Database.GenerateGenresAsync();
