@@ -14,12 +14,13 @@ namespace dMb.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
-        string _FilePathDisplay = App.LocalPath;
+        string _FileNameDisplay = App.DbName;
 
 
-        public string FilePathDisplay { get => $"Database path: {_FilePathDisplay}"; set => SetProperty(ref _FilePathDisplay, value); }
+        public string FileNameDisplay { get => _FileNameDisplay; set => SetProperty(ref _FileNameDisplay, value); }
 
 
+        public Command SelectDBCommand { get; }
         public Command PickFileCommand { get; }
         public Command ResetGenresCommand { get; }
 
@@ -29,12 +30,16 @@ namespace dMb.ViewModels
             Title = "Settings";
 
 
+            SelectDBCommand = new Command(SelectDb);
             PickFileCommand = new Command(async () => await PickFile());
             ResetGenresCommand = new Command(async () => await ResetGenres());
 
+        }
 
 
-            MovieGenres = new ObservableCollection<MovieGenres>();
+        async void SelectDb()
+        {
+            await Shell.Current.GoToAsync(nameof(Views.SelectDbPage));
         }
 
 
@@ -43,7 +48,7 @@ namespace dMb.ViewModels
             var customFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
             {
                 {DevicePlatform.Android, new[] { "image/jpeg" }  }, // how to select directory???? //Mime type for Android
-                {DevicePlatform.UWP, new[] { ".jpg" } } //? // extention for Windows
+                {DevicePlatform.UWP, new[] { ".jpg" } } // extention for Windows
             });
 
             
@@ -51,7 +56,7 @@ namespace dMb.ViewModels
             {
                 var file = await FilePicker.PickAsync( new PickOptions { FileTypes = customFileType });
 
-                FilePathDisplay = file.FullPath;
+                FileNameDisplay = file.FullPath;
             }
             catch(Exception)
             {
@@ -72,37 +77,6 @@ namespace dMb.ViewModels
             return 0;
         
         }
-
-
-
-        public void OnAppearing()
-        {
-            LoadMovieGenres();
-        }
-
-
-
-        public ObservableCollection<MovieGenres> MovieGenres { get; }
-
-        async Task LoadMovieGenres()
-        {
-            try
-            {
-                MovieGenres.Clear();
-                var movieGenres = await App.Database.GetMovieGenresAsync();
-
-                foreach (var mg in movieGenres)
-                {
-                    MovieGenres.Add(mg);
-                }
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Failed to load MovieGenres.");
-            }
-        }
-
-
 
     }
 }

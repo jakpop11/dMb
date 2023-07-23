@@ -11,6 +11,7 @@
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
         <ShellContent Title="Settings" Route="SettingsPage" ContentTemplate="{DataTemplate view:SettingsPage}" />
         <ShellContent Title="About" Route="AboutPage" ContentTemplate="{DataTemplate view:AboutPage}" />
+        <!--<ShellContent Title="Select Db" Route="SelectDbPage" ContentTemplate="{DataTemplate view:SelectDbPage}" />-->
     </FlyoutItem>
     
     <!--TEMP-->

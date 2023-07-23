@@ -10,6 +10,11 @@ namespace dMb
 {
     public partial class App : Application
     {
+        public static string DbName
+        {
+            get => Path.GetFileName(LocalPath);
+        }
+
         public static string LocalPath
         {
             get => Path.Combine(
@@ -101,6 +106,7 @@ namespace dMb
             //string filePath = Path.Combine(rootPath, "file.txt");
             Debug.WriteLine("\n===========================");
             Debug.WriteLine($"Root path: {rootPath}");
+            Debug.WriteLine($"Db Name: {DbName}");
             //Debug.WriteLine($"File path: {filePath}");
             Debug.WriteLine("===========================\n");
             //File.WriteAllText(filePath, "Hello");
