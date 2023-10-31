@@ -16,6 +16,11 @@
                     CornerRadius="10" BackgroundColor="CornflowerBlue"
                     FontSize="16"
                     TextColor="WhiteSmoke" TextTransform="None"/>
+            <Button Text="Share current DataBase" 
+                    Command="{Binding ShareDBCommand}"
+                    CornerRadius="10" BackgroundColor="CornflowerBlue"
+                    FontSize="16"
+                    TextColor="WhiteSmoke" TextTransform="None"/>
             <Button Text="btn"/>
             <Switch />
 

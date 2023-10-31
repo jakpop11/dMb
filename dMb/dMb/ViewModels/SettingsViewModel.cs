@@ -21,6 +21,7 @@ namespace dMb.ViewModels
 
 
         public Command SelectDBCommand { get; }
+        public Command ShareDBCommand { get; }
         public Command PickFileCommand { get; }
         public Command ResetGenresCommand { get; }
 
@@ -31,6 +32,7 @@ namespace dMb.ViewModels
 
 
             SelectDBCommand = new Command(SelectDb);
+            ShareDBCommand = new Command(ShareDb);
             PickFileCommand = new Command(async () => await PickFile());
             ResetGenresCommand = new Command(async () => await ResetGenres());
 
@@ -40,6 +42,25 @@ namespace dMb.ViewModels
         async void SelectDb()
         {
             await Shell.Current.GoToAsync(nameof(Views.SelectDbPage));
+        }
+
+        async void ShareDb()
+        {
+            try
+            {
+                if (App.LocalPath == null) return;
+
+                await Share.RequestAsync(new ShareFileRequest
+                {
+                    Title = "Share current DataBase",
+                    File = new ShareFile(App.LocalPath)
+                });
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to share a file.");
+                System.Diagnostics.Debug.WriteLine("Error: " + e);
+            }
         }
 
 
