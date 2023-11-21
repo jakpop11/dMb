@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using dMb.Controls;
 using dMb.Models;
 using dMb.Views;
-using dMb.Controls;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Xamarin.Forms;
-using Xamarin.Essentials;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 
 
@@ -106,7 +104,7 @@ namespace dMb.ViewModels
                 // Get Movies default or by criteria (search & filters) if there are any
                 var movies = await App.Database.GetMoviesAsync(Search, includedGenres, excludedGenres);
 
-                foreach(var movie in movies)
+                foreach (var movie in movies)
                 {
                     movie.Genres = await App.Database.GetGenresAsync(movie.Id);
                     Movies.Add(movie);
@@ -130,7 +128,7 @@ namespace dMb.ViewModels
 
         async void SelectMovie(Movie movie)
         {
-            if(movie == null)
+            if (movie == null)
             {
                 return;
             }
@@ -205,7 +203,7 @@ namespace dMb.ViewModels
             excludedGenres.Clear();
 
             // Get included and excluded genres as lists
-            foreach(var genre in Genres)
+            foreach (var genre in Genres)
             {
                 if (genre.State == StateCheckBox.CheckBoxState.Checked) includedGenres.Add(genre.Genre);
                 else if (genre.State == StateCheckBox.CheckBoxState.Cross) excludedGenres.Add(genre.Genre);

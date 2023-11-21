@@ -1,12 +1,6 @@
-﻿using System;
+﻿using dMb.Models;
+using System;
 using System.Collections.Generic;
-using System.Text;
-
-using dMb.Models;
-using Xamarin.Forms;
-using Xamarin.Essentials;
-using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
 
 
@@ -77,7 +71,7 @@ namespace dMb.Services
 
         public void AddMovie(Movie movie)
         {
-            if(movie.Id != 0)
+            if (movie.Id != 0)
             {
                 var index = database.FindIndex(m => m.Id == movie.Id);
                 database.Remove((from m in database
@@ -85,11 +79,11 @@ namespace dMb.Services
                                  select m).FirstOrDefault());
                 //database.Add(movie);
                 database.Insert(index, movie);
-                
+
             }
             else
             {
-                int lastindex = database[database.Count-1].Id;
+                int lastindex = database[database.Count - 1].Id;
                 movie.Id = lastindex + 1;
                 database.Add(movie);
             }

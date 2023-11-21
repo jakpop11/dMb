@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Xamarin.Forms;
-using Xamarin.Essentials;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using dMb.Models;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 
 
@@ -14,45 +10,67 @@ namespace dMb.ViewModels
 {
     public class SelectDbViewModel : BaseViewModel
     {
+        public Command RefreshCommand { get; }
+        public Command SelectFileCommand { get; }
+        public Command DeleteFileCommand { get; }
+        public Command ImportFileCommand { get; }
+        public Command GoToCreatePageCommand { get; }
 
-        public Command GoBackCommand { get; }
+
+        public ObservableCollection<string> Files { get; set; }
+
 
         public SelectDbViewModel()
         {
             Title = "Select Database";
 
-            GoBackCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
+            RefreshCommand = new Command(async () => await LoadFiles());
+            SelectFileCommand = new Command(OnAppearing);
+            DeleteFileCommand = new Command(OnAppearing);
+            ImportFileCommand = new Command(OnAppearing);
+            // TODO: add Page path
+            GoToCreatePageCommand = new Command(async () => await Shell.Current.GoToAsync(""));
 
-            MovieGenres = new ObservableCollection<MovieGenres>();
+
+            Files = new ObservableCollection<string>();
         }
-
-
 
         public void OnAppearing()
         {
-            LoadMovieGenres();
+            LoadFiles();
         }
 
 
-
-        public ObservableCollection<MovieGenres> MovieGenres { get; }
-
-        async Task LoadMovieGenres()
+        async Task LoadFiles()
         {
+            IsBusy = true;
             try
             {
-                MovieGenres.Clear();
-                var movieGenres = await App.Database.GetMovieGenresAsync();
-
-                foreach (var mg in movieGenres)
+                Files.Clear();
+                var files = new List<string>()
                 {
-                    MovieGenres.Add(mg);
+                    "Database1.db3",
+                    "Database2.db3",
+                    "Database3.db3",
+                    "Database4.db3",
+                    "Database5.db3",
+                    "Database6.db3",
+                    "Database7.db3",
+                    "Database8.db3",
+                    "Database9.db3",
+                    "Database10.db3",
+                };
+
+                foreach (var f in files)
+                {
+                    Files.Add(f);
                 }
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("Failed to load MovieGenres.");
+                System.Diagnostics.Debug.WriteLine("Failed to load files.");
             }
+            finally { IsBusy = false; }
         }
 
 

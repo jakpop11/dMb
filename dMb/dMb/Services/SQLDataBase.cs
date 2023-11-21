@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using dMb.Models;
-using Xamarin.Forms;
-using Xamarin.Essentials;
-using System.IO;
-using System.Threading.Tasks;
-using System.Linq;
+﻿using dMb.Models;
 using SQLite;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 
@@ -233,7 +227,7 @@ namespace dMb.Services
 
         private Task<int> AddGenreAsync(Genre genre)
         {
-            if(genre.Id != 0)
+            if (genre.Id != 0)
             {
                 // Update existing Genre
                 return database.UpdateAsync(genre);
@@ -322,9 +316,9 @@ namespace dMb.Services
         private string ConvertGenreListToString(List<Genre> genres)
         {
             string result = "(";
-            foreach(var genre in genres)
+            foreach (var genre in genres)
             {
-                result += $"{ genre.Id}, ";
+                result += $"{genre.Id}, ";
             }
             // Delete last comma and close brackets
             result = result.Remove(result.Length - 2) + ")";

@@ -1,10 +1,8 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using System.IO;
-using dMb.Services;
+﻿using dMb.Services;
+using System;
 using System.Diagnostics;
+using System.IO;
+using Xamarin.Forms;
 
 namespace dMb
 {
@@ -22,7 +20,7 @@ namespace dMb
                     Environment.SpecialFolder.LocalApplicationData), "localDataBase.db3");
         }
 
-        static string rootPath
+        static string RootPath
         {
             get => Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "databases");
@@ -102,10 +100,10 @@ namespace dMb
             InitializeComponent();
             MainPage = new AppShell();
 
-            Directory.CreateDirectory(rootPath);
+            Directory.CreateDirectory(RootPath);
             //string filePath = Path.Combine(rootPath, "file.txt");
             Debug.WriteLine("\n===========================");
-            Debug.WriteLine($"Root path: {rootPath}");
+            Debug.WriteLine($"Root path: {RootPath}");
             Debug.WriteLine($"Db Name: {DbName}");
             //Debug.WriteLine($"File path: {filePath}");
             Debug.WriteLine("===========================\n");

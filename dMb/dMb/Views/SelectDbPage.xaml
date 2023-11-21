@@ -9,23 +9,85 @@
              Shell.TabBarIsVisible="False"
              Title="{Binding Title}">
 
-    <ScrollView>
+    <ScrollView BackgroundColor="#325569">
         <StackLayout Margin="4">
-            <Button Text="Go Back" Command="{Binding GoBackCommand}"/>
-            
-            <!--MoveiGenres Debug-->
-            <ScrollView Margin="20, 0">
-                <StackLayout BindableLayout.ItemsSource="{Binding MovieGenres}">
+
+            <Label Text="dMb" 
+                   HorizontalOptions="Center"
+                   FontSize="46"
+                   TextColor="Gold"
+                   />
+
+            <Label Text="Select Database:"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="Subtitle"
+                   TextColor="AliceBlue"
+                   TextTransform="Uppercase"
+                   />
+
+            <!--Files-->
+            <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding RefreshCommand}" HeightRequest="100">
+                <StackLayout BindableLayout.ItemsSource="{Binding Files}">
+                    
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <Grid ColumnDefinitions="auto,auto" x:DataType="model:MovieGenres">
-                                <Label Grid.Column="0" TextColor="GreenYellow" Text="{Binding MovieId}" />
-                                <Label Grid.Column="1" TextColor="Green" Text="{Binding GenreId}" />
+                            <Label Text="{Binding .}"/>
+                            <!--<Grid ColumnDefinitions="*, auto">
+                                <Label Grid.Row="1" Text="{Binding .}"/>
+                                <Button Grid.Column="0" 
+                                        Text="{Binding .}"
+                                        CornerRadius="10"
+                                        BackgroundColor="#69C1A1"
+                                        TextColor="AliceBlue"
+                                        TextTransform="None"/>
+                                <Button Grid.Column="1"
+                                        Text="DEL"
+                                        CornerRadius="10"
+                                        BackgroundColor="#69C1A1"
+                                        TextColor="AliceBlue"/>
+                            </Grid>-->
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </RefreshView>
+
+            <!--MovieGenres Debug-->
+            <!--<ScrollView Margin="0, 0" VerticalOptions="Fill" HeightRequest="300">
+                <StackLayout BindableLayout.ItemsSource="{Binding Files}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*, auto">
+                                --><!--<Label Grid.Column="0" Text="{Binding .}" TextColor="AliceBlue"/>--><!--
+                                <Button Grid.Column="0" 
+                                        Text="{Binding .}"
+                                        CornerRadius="10"
+                                        BackgroundColor="#69C1A1"
+                                        TextColor="AliceBlue"
+                                        TextTransform="None"/>
+                                <Button Grid.Column="1"
+                                        Text="DEL"
+                                        CornerRadius="10"
+                                        BackgroundColor="#69C1A1"
+                                        TextColor="AliceBlue"/>
                             </Grid>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
-            </ScrollView>
+            </ScrollView>-->
+
+            <Grid ColumnDefinitions="*, auto">
+                <Button Grid.Column="0" 
+                        Text="Create Database"
+                        CornerRadius="10"
+                        BackgroundColor="#69C1A1"
+                        TextColor="AliceBlue"/>
+                <Button Grid.Column="1"
+                        Text="IMP"
+                        CornerRadius="10"
+                        BackgroundColor="#69C1A1"
+                        TextColor="AliceBlue"/>
+            </Grid>
+
         </StackLayout>
     </ScrollView>
 </ContentPage>

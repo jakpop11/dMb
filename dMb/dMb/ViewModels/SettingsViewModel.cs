@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Xamarin.Forms;
-using Xamarin.Essentials;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using dMb.Models;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 
 
@@ -72,14 +68,14 @@ namespace dMb.ViewModels
                 {DevicePlatform.UWP, new[] { ".jpg" } } // extention for Windows
             });
 
-            
+
             try
             {
-                var file = await FilePicker.PickAsync( new PickOptions { FileTypes = customFileType });
+                var file = await FilePicker.PickAsync(new PickOptions { FileTypes = customFileType });
 
                 FileNameDisplay = file.FullPath;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 System.Diagnostics.Debug.WriteLine("Failed to pick a file.");
             }
@@ -89,14 +85,14 @@ namespace dMb.ViewModels
         async Task<int> ResetGenres()
         {
             bool result = await Shell.Current.DisplayAlert(
-                "Are you sure?", "Do you want to reset genres and clear all data about them?", 
+                "Are you sure?", "Do you want to reset genres and clear all data about them?",
                 accept: "Yes, I'm sure", cancel: "No, keep them");
             if (result)
             {
                 return await App.Database.GenerateGenresAsync();
             }
             return 0;
-        
+
         }
 
     }

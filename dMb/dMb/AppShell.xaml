@@ -11,12 +11,12 @@
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems" >
         <ShellContent Title="Settings" Route="SettingsPage" ContentTemplate="{DataTemplate view:SettingsPage}" />
         <ShellContent Title="About" Route="AboutPage" ContentTemplate="{DataTemplate view:AboutPage}" />
-        <!--<ShellContent Title="Select Db" Route="SelectDbPage" ContentTemplate="{DataTemplate view:SelectDbPage}" />-->
     </FlyoutItem>
     
     <!--TEMP-->
-    <FlyoutItem Title="Edit" >
-        <ShellContent Route="MovieDetailPage" ContentTemplate="{DataTemplate view:MovieDetailPage}" />
+    <FlyoutItem Title="DEBUG" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Select Db" Route="SelectDbPage" ContentTemplate="{DataTemplate view:SelectDbPage}" />
+        <ShellContent Title="Detail Page" Route="MovieDetailPage" ContentTemplate="{DataTemplate view:MovieDetailPage}" />
     </FlyoutItem>
 
 </Shell>

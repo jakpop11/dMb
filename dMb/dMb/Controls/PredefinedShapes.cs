@@ -1,5 +1,4 @@
 ﻿using Xamarin.Forms.Shapes;
-using Xamarin.Forms.Xaml;
 
 
 namespace dMb.Controls

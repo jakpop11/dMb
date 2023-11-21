@@ -1,8 +1,8 @@
-﻿using Xamarin.Forms;
-using Xamarin.Forms.Shapes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
+using Xamarin.Forms.Shapes;
 
 
 namespace dMb.Controls

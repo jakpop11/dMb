@@ -1,12 +1,9 @@
-﻿using System;
+﻿using dMb.Models;
+using System;
 using System.Collections.Generic;
-using System.Text;
-
-using dMb.Models;
-using Xamarin.Forms;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Linq;
+using Xamarin.Forms;
 
 
 
@@ -20,7 +17,7 @@ namespace dMb.ViewModels
         string _movieImgUrl;
         string _movieDetails;
         DateTime _movieEditDate;
-        
+
 
         public int Id
         {
@@ -85,7 +82,7 @@ namespace dMb.ViewModels
         async void SaveMovie()
         {
             List<Genre> selectedGenre = new List<Genre>();
-            foreach(var gb in Genres)
+            foreach (var gb in Genres)
             {
                 if (gb.Bool)
                 {
@@ -120,7 +117,7 @@ namespace dMb.ViewModels
             {
                 await App.Database.DeleteMovieAsync(movie);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Failed to delete movie");
             }
@@ -147,7 +144,7 @@ namespace dMb.ViewModels
                 MovieImgUrl = result;
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Failed to Load an image.");
             }
@@ -210,7 +207,7 @@ namespace dMb.ViewModels
         }
 
 
-        
+
 
     }
 }
