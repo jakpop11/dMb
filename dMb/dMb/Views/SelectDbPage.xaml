@@ -7,6 +7,8 @@
              x:Class="dMb.Views.SelectDbPage"
              x:DataType="local:SelectDbViewModel"
              Shell.TabBarIsVisible="False"
+             Shell.FlyoutBehavior="Disabled"
+             
              Title="{Binding Title}">
 
 
@@ -47,12 +49,17 @@
                             <!--Genre as TEMP model to display labels-->
                             <Button Grid.Column="0" 
                                     Text="{Binding Name}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:SelectDbViewModel}}, 
+                                              Path=SelectFileCommand}"
+                                    CommandParameter="{Binding Name}"
                                     CornerRadius="10"
                                     BackgroundColor="#69C1A1"
                                     TextColor="AliceBlue"
                                     TextTransform="None"/>
                             <Button Grid.Column="1"
                                     Text="DEL"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:SelectDbViewModel}}, 
+                                              Path=DeleteFileCommand}"
                                     CornerRadius="10"
                                     BackgroundColor="#69C1A1"
                                     TextColor="AliceBlue"/>

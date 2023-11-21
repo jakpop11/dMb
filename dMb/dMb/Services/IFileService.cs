@@ -5,10 +5,8 @@ namespace dMb.Services
 {
     public interface IFileService
     {
-        string GetRoothPath();
-        string GetDatabasesPath();
+        string GetRootPath();
 
-        Task<string> CreateFileAsync();
         void DeleteFile(string filePath);
 
         Task<string[]> GetFilesNamesAsync();

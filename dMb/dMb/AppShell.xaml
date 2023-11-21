@@ -5,6 +5,11 @@
        Title="dMb"
        x:Class="dMb.AppShell">
 
+    <!--<ShellItem FlyoutItemIsVisible="False">
+        <ShellContent Route="SelectDbPage" ContentTemplate="{DataTemplate view:SelectDbPage}" />
+        <ShellContent Route="CreateDbPage" ContentTemplate="{DataTemplate view:CreateDbPage}" />
+    </ShellItem>-->
+    
     <FlyoutItem Title="Browse" >
         <ShellContent Route="MoviesPage" ContentTemplate="{DataTemplate view:MoviesPage}" />
     </FlyoutItem>

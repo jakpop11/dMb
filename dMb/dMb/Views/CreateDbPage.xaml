@@ -96,6 +96,7 @@
 
             <Button Grid.Column="0" 
                     Text="Create Database"
+                    Command="{Binding CreateDbCommand}"
                     CornerRadius="10"
                     BackgroundColor="#69C1A1"
                     TextColor="AliceBlue"/>

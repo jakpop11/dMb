@@ -1,10 +1,14 @@
 ﻿using dMb.Models;
+using dMb.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+
 
 namespace dMb.ViewModels
 {
@@ -28,8 +32,6 @@ namespace dMb.ViewModels
         public ObservableCollection<Genre> Genres { get; }
 
 
-
-        public Command RefreshCommand { get; }
         public Command AddGenreCommand { get; }
         public Command DeleteGenreCommand { get; }
         public Command CreateDbCommand { get; }
@@ -42,6 +44,7 @@ namespace dMb.ViewModels
 
             AddGenreCommand = new Command(AddGenre);
             DeleteGenreCommand = new Command<string>(DeleteGenre);
+            CreateDbCommand = new Command(CreateDb);
         }
 
         void AddGenre()
@@ -59,6 +62,22 @@ namespace dMb.ViewModels
             var genre = Genres.First(g => g.Name == name);
             if (genre != null) { Genres.Remove(genre); }
 
+        }
+
+        void CreateDb()
+        {
+            string dbPath = System.IO.Path.Combine(App.RootPath, $"{DbName}.db3");
+
+            // Creates new Database
+            new SQLDataBase(dbPath, Genres.ToList());
+
+            Debug.WriteLine("\n===========================");
+            Debug.WriteLine($"Root path: {App.RootPath}");
+            Debug.WriteLine($"Db path: {App.DbPath}");
+            Debug.WriteLine($"Db Name: {App.DbName}");
+            Debug.WriteLine("===========================\n");
+
+            Shell.Current.GoToAsync("..");
         }
     }
 }

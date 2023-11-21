@@ -44,12 +44,12 @@ namespace dMb.ViewModels
         {
             try
             {
-                if (App.LocalPath == null) return;
+                if (App.DbPath == null) return;
 
                 await Share.RequestAsync(new ShareFileRequest
                 {
                     Title = "Share current DataBase",
-                    File = new ShareFile(App.LocalPath)
+                    File = new ShareFile(App.DbPath)
                 });
             }
             catch (Exception e)

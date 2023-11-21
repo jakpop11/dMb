@@ -29,6 +29,23 @@ namespace dMb.Services
 
         }
 
+        /// <summary>
+        /// / Creates Database with providet <param name="genres">
+        /// </summary>
+        /// <param name="dbPath"></param>
+        /// <param name="genres"></param>
+        public SQLDataBase(string dbPath, List<Genre> genres)
+        {
+            database = new SQLiteAsyncConnection(dbPath);
+            database.CreateTableAsync<Movie>().Wait();
+            database.CreateTableAsync<Genre>().Wait();
+            database.CreateTableAsync<MovieGenres>().Wait();
+
+            // Inserts genres into Database
+            CreateGenresTable(genres).Wait();
+
+        }
+
 
         #region Movies
         public Task<List<Movie>> GetMoviesAsync()
@@ -177,6 +194,19 @@ namespace dMb.Services
                 .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// / !!! IT WILL CLEAR TABLES !!!
+        /// / Clears Genre and MovieGenres Tables, then inserts <param name="genresTable">
+        /// </summary>
+        /// <param name="genresTable"></param>
+        /// <returns></returns>
+        public Task<int> CreateGenresTable(List<Genre> genresTable)
+        {
+            // Clear table and insert genres
+            database.DeleteAllAsync<Genre>().Wait();
+            database.DeleteAllAsync<MovieGenres>().Wait();
+            return database.InsertAllAsync(genresTable);
+        }
 
         /// <summary>
         /// / !!! IT WILL CLEAR TABLES !!!

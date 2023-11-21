@@ -8,64 +8,27 @@ namespace dMb
 {
     public partial class App : Application
     {
-        public static string DbName
-        {
-            get => Path.GetFileName(LocalPath);
-        }
-
-        public static string LocalPath
-        {
-            get => Path.Combine(
-                Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData), "localDataBase.db3");
-        }
-
-        static string RootPath
-        {
-            get => Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "databases");
-        }
-
-
-        /*
-         * [WIN] ApplicationData: C:\Users\jakpop11\AppData\Roaming
-         * [AND] ApplicationData: /data/user/0/com.companyname.dmb/files/.config
-         * [WIN] LocalApplicationData: C:\Users\jakpop11\AppData\Local\Packages\5425c65a-7be5-4e00-ad45-1c8a9e953a42_q5exf0whbv3wr\LocalState
-         * [AND] LocalApplicationData: /data/user/0/com.companyname.dmb/files/.local/share
-         * [WIN] CommonApplicationData: C:\Users\jakpop11\AppData\Local\Packages\5425c65a-7be5-4e00-ad45-1c8a9e953a42_q5exf0whbv3wr\LocalState\ProgramData
-         * [AND] CommonApplicationData: /usr/share
-         */
-
-
-        // TO DeLeTe
-        //public static string LocalPath
+        #region Old File Paths
+        //public static string DbName
         //{
-        //    get
-        //    {
-        //        switch (Device.RuntimePlatform)
-        //        {
-        //            case Device.Android:
-        //                return "/storage/emulated/0/Documents/test.txt";
-        //            case Device.UWP:
-        //                return AppContext.BaseDirectory;
-        //            default:
-        //                return null;
-        //        }
-        //    }
-        //    /*
-        //     * LocalApplicationData - not visible
-        //     * ApplicationData - not visible
-        //     * CommonApplicationData - don't work
-        //     * ProgramFiles - don't work
-        //     * MyDocuments - not visible
-        //     * UserProfile - not visible
-        //     * Personal + '\\'... - da fuk?
-        //     * InternetCache - nope
-        //     * 
-        //     * ? leave it
-        //     */
+        //    get => Path.GetFileName(LocalPath);
         //}
 
+        //public static string LocalPath
+        //{
+        //    get => Path.Combine(
+        //        Environment.GetFolderPath(
+        //            Environment.SpecialFolder.LocalApplicationData), "localDataBase.db3");
+        //}
+
+        //static string RootPath
+        //{
+        //    get => Path.Combine(
+        //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "databases");
+        //}
+        #endregion
+
+        #region Old Code to Delete
         static MovieDatabase moviedatabase;
 
         public static MovieDatabase MovieDatabase
@@ -79,6 +42,24 @@ namespace dMb
                 return moviedatabase;
             }
         }
+        #endregion
+
+        public static string DbName
+        {
+            get => Path.GetFileName(DbPath);
+        }
+
+        static string dbPath;
+        public static string DbPath
+        {
+            get => dbPath;
+            set => dbPath = value;
+        }
+
+        public static string RootPath
+        {
+            get => Path.Combine(DependencyService.Get<IFileService>().GetRootPath(), "databases");
+        }
 
         static SQLDataBase database;
 
@@ -88,7 +69,7 @@ namespace dMb
             {
                 if (database == null)
                 {
-                    database = new SQLDataBase(LocalPath);
+                    database = new SQLDataBase(DbPath);
                 }
                 return database;
             }
@@ -101,17 +82,17 @@ namespace dMb
             MainPage = new AppShell();
 
             Directory.CreateDirectory(RootPath);
-            //string filePath = Path.Combine(rootPath, "file.txt");
             Debug.WriteLine("\n===========================");
             Debug.WriteLine($"Root path: {RootPath}");
+            Debug.WriteLine($"Db path: {DbPath}");
             Debug.WriteLine($"Db Name: {DbName}");
-            //Debug.WriteLine($"File path: {filePath}");
             Debug.WriteLine("===========================\n");
-            //File.WriteAllText(filePath, "Hello");
         }
 
         protected override void OnStart()
         {
+            // Start App with SelectDbPage
+            Shell.Current.GoToAsync($"//{nameof(Views.SelectDbPage)}");
         }
 
         protected override void OnSleep()
