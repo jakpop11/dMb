@@ -15,14 +15,17 @@
             <Label Text="dMb" 
                    HorizontalOptions="Center"
                    FontSize="46"
-                   TextColor="Gold"
+                   TextColor="Goldenrod"
                    />
+
+            <TemplatedView ControlTemplate="{StaticResource Separator}" />
 
             <Label Text="Select Database:"
                    HorizontalOptions="CenterAndExpand"
-                   FontSize="Subtitle"
+                   FontSize="18"
                    TextColor="AliceBlue"
                    TextTransform="Uppercase"
+                   CharacterSpacing="4"
                    />
 
             <!--Files-->
@@ -74,6 +77,8 @@
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
             </ScrollView>-->
+
+            <TemplatedView ControlTemplate="{StaticResource Separator}" />
 
             <Grid ColumnDefinitions="*, auto">
                 <Button Grid.Column="0" 

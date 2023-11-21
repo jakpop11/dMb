@@ -6,6 +6,32 @@
     <Application.Resources>
         <ResourceDictionary>
             
+            <!--Separator-->
+            <ControlTemplate x:Key="Separator">
+                <Grid MinimumHeightRequest="30" HorizontalOptions="Center" Padding="20, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Line Grid.Column="0"
+                          X1="0" Y1="4" X2="200" Y2="4" 
+                          Stroke="Goldenrod" StrokeThickness="4" 
+                          VerticalOptions="Center"/>
+                    <Path Grid.Column="1" 
+                           Data="M8 0L8 0L16 8L8 16L0 8Z" 
+                           Fill="Goldenrod" 
+                           Aspect="UniformToFill"
+                           VerticalOptions="Center" HorizontalOptions="Center"/>
+                    <Line Grid.Column="2"
+                          X1="0" Y1="4" X2="200" Y2="4" 
+                          Stroke="Goldenrod" StrokeThickness="4"
+                          VerticalOptions="Center"/>
+
+                </Grid>
+            </ControlTemplate>
+            
         </ResourceDictionary>        
     </Application.Resources>
 </Application>
