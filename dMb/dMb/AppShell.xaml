@@ -16,6 +16,7 @@
     <!--TEMP-->
     <FlyoutItem Title="DEBUG" FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Select Db" Route="SelectDbPage" ContentTemplate="{DataTemplate view:SelectDbPage}" />
+        <ShellContent Title="Create Db" Route="CreateDbPage" ContentTemplate="{DataTemplate view:CreateDbPage}" />
         <ShellContent Title="Detail Page" Route="MovieDetailPage" ContentTemplate="{DataTemplate view:MovieDetailPage}" />
     </FlyoutItem>
 

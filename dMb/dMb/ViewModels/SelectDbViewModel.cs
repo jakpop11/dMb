@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -10,29 +11,30 @@ namespace dMb.ViewModels
 {
     public class SelectDbViewModel : BaseViewModel
     {
-        public Command RefreshCommand { get; }
+
+        public ObservableCollection<Models.Genre> Files { get; }
+
+
         public Command SelectFileCommand { get; }
         public Command DeleteFileCommand { get; }
         public Command ImportFileCommand { get; }
         public Command GoToCreatePageCommand { get; }
 
 
-        public ObservableCollection<string> Files { get; set; }
-
-
         public SelectDbViewModel()
         {
             Title = "Select Database";
+            Files = new ObservableCollection<Models.Genre>();
 
-            RefreshCommand = new Command(async () => await LoadFiles());
-            SelectFileCommand = new Command(OnAppearing);
-            DeleteFileCommand = new Command(OnAppearing);
+
+            //SelectFileCommand = new Command(OnAppearing);
+            //DeleteFileCommand = new Command(OnAppearing);
             ImportFileCommand = new Command(OnAppearing);
             // TODO: add Page path
-            GoToCreatePageCommand = new Command(async () => await Shell.Current.GoToAsync(""));
+            GoToCreatePageCommand = new Command(
+                async () => await Shell.Current.GoToAsync(nameof(Views.CreateDbPage)));
 
 
-            Files = new ObservableCollection<string>();
         }
 
         public void OnAppearing()
@@ -47,24 +49,21 @@ namespace dMb.ViewModels
             try
             {
                 Files.Clear();
-                var files = new List<string>()
-                {
-                    "Database1.db3",
-                    "Database2.db3",
-                    "Database3.db3",
-                    "Database4.db3",
-                    "Database5.db3",
-                    "Database6.db3",
-                    "Database7.db3",
-                    "Database8.db3",
-                    "Database9.db3",
-                    "Database10.db3",
-                };
+                //foreach (var f in files)
+                //{
+                //    Files.Add(f);
+                //}
 
-                foreach (var f in files)
+                int filesCount = 15;
+                for(int i=0; i<filesCount; i++)
                 {
-                    Files.Add(f);
+                    // TODO: Change to FileInfo or smt
+                    //Files.Add($"Database{i+1}.db3");
+                    //FileInfo fi = new FileInfo("filename");
+
+                    Files.Add(new Models.Genre() { Name= $"Database{i + 1}.db3" });
                 }
+
             }
             catch (Exception e)
             {

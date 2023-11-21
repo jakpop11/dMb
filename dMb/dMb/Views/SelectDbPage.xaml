@@ -9,58 +9,68 @@
              Shell.TabBarIsVisible="False"
              Title="{Binding Title}">
 
-    <ScrollView BackgroundColor="#325569">
-        <StackLayout Margin="4">
 
+    <Grid BackgroundColor="#325569" Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+
+        <StackLayout Grid.Row="0">
             <Label Text="dMb" 
-                   HorizontalOptions="Center"
-                   FontSize="46"
-                   TextColor="Goldenrod"
-                   />
+                       HorizontalOptions="Center"
+                       FontSize="46"
+                       TextColor="Goldenrod"
+                       />
 
             <TemplatedView ControlTemplate="{StaticResource Separator}" />
 
             <Label Text="Select Database:"
-                   HorizontalOptions="CenterAndExpand"
-                   FontSize="18"
-                   TextColor="AliceBlue"
-                   TextTransform="Uppercase"
-                   CharacterSpacing="4"
-                   />
+                       HorizontalOptions="CenterAndExpand"
+                       FontSize="18"
+                       TextColor="AliceBlue"
+                       TextTransform="Uppercase"
+                       CharacterSpacing="4"
+                       />
+        </StackLayout>
 
-            <!--Files-->
-            <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding RefreshCommand}" HeightRequest="100">
-                <StackLayout BindableLayout.ItemsSource="{Binding Files}">
-                    
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Label Text="{Binding .}"/>
-                            <!--<Grid ColumnDefinitions="*, auto">
-                                <Label Grid.Row="1" Text="{Binding .}"/>
-                                <Button Grid.Column="0" 
-                                        Text="{Binding .}"
-                                        CornerRadius="10"
-                                        BackgroundColor="#69C1A1"
-                                        TextColor="AliceBlue"
-                                        TextTransform="None"/>
-                                <Button Grid.Column="1"
-                                        Text="DEL"
-                                        CornerRadius="10"
-                                        BackgroundColor="#69C1A1"
-                                        TextColor="AliceBlue"/>
-                            </Grid>-->
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
-            </RefreshView>
+        <!--#region Files -->
+        <ScrollView Grid.Row="1" MinimumHeightRequest="300">
+            <StackLayout BindableLayout.ItemsSource="{Binding Files}">
 
-            <!--MovieGenres Debug-->
-            <!--<ScrollView Margin="0, 0" VerticalOptions="Fill" HeightRequest="300">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        
+                        <Grid ColumnDefinitions="*, auto" x:DataType="model:Genre">
+                            <!--Genre as TEMP model to display labels-->
+                            <Button Grid.Column="0" 
+                                    Text="{Binding Name}"
+                                    CornerRadius="10"
+                                    BackgroundColor="#69C1A1"
+                                    TextColor="AliceBlue"
+                                    TextTransform="None"/>
+                            <Button Grid.Column="1"
+                                    Text="DEL"
+                                    CornerRadius="10"
+                                    BackgroundColor="#69C1A1"
+                                    TextColor="AliceBlue"/>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </ScrollView>
+
+        <!--MovieGenres Debug-->
+        <!--<ScrollView Margin="0, 0" VerticalOptions="Fill" HeightRequest="300">
                 <StackLayout BindableLayout.ItemsSource="{Binding Files}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Grid ColumnDefinitions="*, auto">
-                                --><!--<Label Grid.Column="0" Text="{Binding .}" TextColor="AliceBlue"/>--><!--
+                                -->
+        <!--<Label Grid.Column="0" Text="{Binding .}" TextColor="AliceBlue"/>-->
+        <!--
                                 <Button Grid.Column="0" 
                                         Text="{Binding .}"
                                         CornerRadius="10"
@@ -78,21 +88,26 @@
                 </StackLayout>
             </ScrollView>-->
 
+        <!--#endregion-->
+
+        <StackLayout Grid.Row="2">
             <TemplatedView ControlTemplate="{StaticResource Separator}" />
 
             <Grid ColumnDefinitions="*, auto">
                 <Button Grid.Column="0" 
                         Text="Create Database"
+                        Command="{Binding GoToCreatePageCommand}"
                         CornerRadius="10"
                         BackgroundColor="#69C1A1"
                         TextColor="AliceBlue"/>
                 <Button Grid.Column="1"
                         Text="IMP"
+                        Command="{Binding ImportFileCommand}"
                         CornerRadius="10"
                         BackgroundColor="#69C1A1"
                         TextColor="AliceBlue"/>
             </Grid>
-
         </StackLayout>
-    </ScrollView>
+
+    </Grid>
 </ContentPage>

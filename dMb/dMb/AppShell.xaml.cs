@@ -10,6 +10,7 @@ namespace dMb
 
             Routing.RegisterRoute(nameof(Views.MovieDetailPage), typeof(Views.MovieDetailPage));
             Routing.RegisterRoute(nameof(Views.SelectDbPage), typeof(Views.SelectDbPage));
+            Routing.RegisterRoute(nameof(Views.CreateDbPage), typeof(Views.CreateDbPage));
         }
 
     }
