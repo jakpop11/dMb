@@ -99,12 +99,12 @@
                 <Button Text="Reset" Command="{Binding ResetFiltersCommand}" />
 
 
-                <StackLayout BindableLayout.ItemsSource="{Binding Genres}" >
-                    <BindableLayout.EmptyView>
+                <StackLayout BindableLayout.ItemsSource="{Binding Genres, Mode=TwoWay}" >
+                    <!--<BindableLayout.EmptyView>
                         <DataTemplate>
                             <Label Text="No Genres" />
                         </DataTemplate>
-                    </BindableLayout.EmptyView>
+                    </BindableLayout.EmptyView>-->
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Grid ColumnDefinitions="auto,*"

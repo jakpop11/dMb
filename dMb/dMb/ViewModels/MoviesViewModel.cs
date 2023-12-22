@@ -87,7 +87,6 @@ namespace dMb.ViewModels
 
             // Loading
             IsBusy = true;
-            LoadGenres();
 
         }
 
@@ -190,9 +189,9 @@ namespace dMb.ViewModels
         public void OnAppearing()
         {
             // Refresh list of Movies
-            //IsBusy = true; // Don't refresh list when user comes back from MovieDetailsPage
+            IsBusy = true; // Don't refresh list when user comes back from MovieDetailsPage
             SelectedMovie = null;
-
+            LoadGenres();
         }
 
 
