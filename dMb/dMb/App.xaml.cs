@@ -53,7 +53,18 @@ namespace dMb
         public static string DbPath
         {
             get => dbPath;
-            set => dbPath = value;
+            set
+            {
+                if (dbPath == value) return;
+
+                // ToDo: validate path
+                // Here can go path validation code if needed
+
+                dbPath = value;
+
+                // Connect to new database
+                Database = new SQLDataBase(DbPath);
+            }
         }
 
         public static string RootPath
@@ -73,6 +84,7 @@ namespace dMb
                 }
                 return database;
             }
+            set => database = value;
         }
 
 
