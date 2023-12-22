@@ -109,6 +109,9 @@ namespace dMb.ViewModels
         {
             System.Diagnostics.Debug.WriteLine($"You want to delete this {filename}.");
 
+            // ToDo:
+            // Fix not being able to delete files (even with storage permissions)
+
             bool result = await Shell.Current.DisplayAlert(
                 title: "Delete Database",
                 message: "Are you sure that you want to delete this database?",

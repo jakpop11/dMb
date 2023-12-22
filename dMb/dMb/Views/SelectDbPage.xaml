@@ -60,6 +60,7 @@
                                     Text="DEL"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type local:SelectDbViewModel}}, 
                                               Path=DeleteFileCommand}"
+                                    CommandParameter="{Binding Name}"
                                     CornerRadius="10"
                                     BackgroundColor="#69C1A1"
                                     TextColor="AliceBlue"/>
