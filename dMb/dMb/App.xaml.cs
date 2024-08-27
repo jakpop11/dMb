@@ -1,54 +1,34 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
+﻿using dMb.Services;
+using System;
+using System.Diagnostics;
 using System.IO;
-using dMb.Services;
-
-
+using Xamarin.Forms;
 
 namespace dMb
 {
     public partial class App : Application
     {
-        public static string LocalPath
-        {
-            get => Path.Combine(
-                Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData), "localDataBase.db3");
-        }
-
-
-
-        // TO DeLeTe
-        //public static string LocalPath
+        #region Old File Paths
+        //public static string DbName
         //{
-        //    get
-        //    {
-        //        switch (Device.RuntimePlatform)
-        //        {
-        //            case Device.Android:
-        //                return "/storage/emulated/0/Documents/test.txt";
-        //            case Device.UWP:
-        //                return AppContext.BaseDirectory;
-        //            default:
-        //                return null;
-        //        }
-        //    }
-        //    /*
-        //     * LocalApplicationData - not visible
-        //     * ApplicationData - not visible
-        //     * CommonApplicationData - don't work
-        //     * ProgramFiles - don't work
-        //     * MyDocuments - not visible
-        //     * UserProfile - not visible
-        //     * Personal + '\\'... - da fuk?
-        //     * InternetCache - nope
-        //     * 
-        //     * ? leave it
-        //     */
+        //    get => Path.GetFileName(LocalPath);
         //}
 
+        //public static string LocalPath
+        //{
+        //    get => Path.Combine(
+        //        Environment.GetFolderPath(
+        //            Environment.SpecialFolder.LocalApplicationData), "localDataBase.db3");
+        //}
+
+        //static string RootPath
+        //{
+        //    get => Path.Combine(
+        //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "databases");
+        //}
+        #endregion
+
+        #region Old Code to Delete
         static MovieDatabase moviedatabase;
 
         public static MovieDatabase MovieDatabase
@@ -62,6 +42,35 @@ namespace dMb
                 return moviedatabase;
             }
         }
+        #endregion
+
+        public static string DbName
+        {
+            get => Path.GetFileName(DbPath);
+        }
+
+        static string dbPath;
+        public static string DbPath
+        {
+            get => dbPath;
+            set
+            {
+                if (dbPath == value) return;
+
+                // ToDo: validate path
+                // Here can go path validation code if needed
+
+                dbPath = value;
+
+                // Connect to new database
+                Database = new SQLDataBase(DbPath);
+            }
+        }
+
+        public static string RootPath
+        {
+            get => Path.Combine(DependencyService.Get<IFileService>().GetRootPath(), "databases");
+        }
 
         static SQLDataBase database;
 
@@ -71,10 +80,11 @@ namespace dMb
             {
                 if (database == null)
                 {
-                    database = new SQLDataBase(LocalPath);
+                    database = new SQLDataBase(DbPath);
                 }
                 return database;
             }
+            set => database = value;
         }
 
 
@@ -82,10 +92,19 @@ namespace dMb
         {
             InitializeComponent();
             MainPage = new AppShell();
+
+            Directory.CreateDirectory(RootPath);
+            Debug.WriteLine("\n===========================");
+            Debug.WriteLine($"Root path: {RootPath}");
+            Debug.WriteLine($"Db path: {DbPath}");
+            Debug.WriteLine($"Db Name: {DbName}");
+            Debug.WriteLine("===========================\n");
         }
 
         protected override void OnStart()
         {
+            // Start App with SelectDbPage
+            Shell.Current.GoToAsync($"//{nameof(Views.SelectDbPage)}");
         }
 
         protected override void OnSleep()

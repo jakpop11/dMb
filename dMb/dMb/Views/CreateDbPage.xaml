@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:dMb.ViewModels"
+             xmlns:model="clr-namespace:dMb.Models"
+             xmlns:controls="clr-namespace:dMb.Controls"
+             x:Class="dMb.Views.CreateDbPage"
+             x:DataType="local:CreateDbViewModel"
+             Shell.TabBarIsVisible="False"
+             Title="{Binding Title}">
+
+    <Grid BackgroundColor="#325569" Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+
+        <StackLayout Grid.Row="0">
+            <Label Text="dMb" 
+                   HorizontalOptions="Center"
+                   FontSize="46"
+                   TextColor="Goldenrod"
+                   />
+
+            <TemplatedView ControlTemplate="{StaticResource Separator}" />
+
+            <Label Text="Create Database:"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="18"
+                   TextColor="AliceBlue"
+                   TextTransform="Uppercase"
+                   CharacterSpacing="4"
+                   />
+
+            <Entry Text="{Binding DbName}"
+                   TextColor="Black"
+                   Placeholder="Database Name"
+                   PlaceholderColor="Gray"
+                   BackgroundColor="AliceBlue"
+                   />
+        
+
+        
+            <Grid ColumnDefinitions="*, auto">
+                <Entry Grid.Column="0" 
+                       Text="{Binding GenreName}"
+                       TextColor="Black"
+                       Placeholder="Genre Name"
+                       PlaceholderColor="Gray"
+                       BackgroundColor="AliceBlue"
+                       />
+                <Button Grid.Column="1"
+                        Text="ADD"
+                        Command="{Binding AddGenreCommand}"
+                        CornerRadius="10"
+                        BackgroundColor="#69C1A1"
+                        TextColor="AliceBlue"/>
+            </Grid>
+
+        </StackLayout>
+        
+    
+        <!--#region Genres -->
+        <ScrollView Grid.Row="1" MinimumHeightRequest="300">
+            <StackLayout BindableLayout.ItemsSource="{Binding Genres}">
+
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        
+                        <Grid ColumnDefinitions="*, auto" x:DataType="model:Genre">
+                            <Button Grid.Column="0" 
+                                        Text="{Binding Name}"
+                                        CornerRadius="10"
+                                        BackgroundColor="#69C1A1"
+                                        TextColor="AliceBlue"
+                                        TextTransform="None"/>
+                            <Button Grid.Column="1"
+                                        Text="DEL"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:CreateDbViewModel}}, 
+                                                  Path=DeleteGenreCommand}"
+                                        CommandParameter="{Binding Name}"
+                                        CornerRadius="10"
+                                        BackgroundColor="#69C1A1"
+                                        TextColor="AliceBlue"/>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </ScrollView>
+        <!--#endregion-->
+
+        <StackLayout Grid.Row="2">
+            <TemplatedView ControlTemplate="{StaticResource Separator}" />
+
+            <Button Grid.Column="0" 
+                    Text="Create Database"
+                    Command="{Binding CreateDbCommand}"
+                    CornerRadius="10"
+                    BackgroundColor="#69C1A1"
+                    TextColor="AliceBlue"/>
+        </StackLayout>
+
+    </Grid>
+</ContentPage>

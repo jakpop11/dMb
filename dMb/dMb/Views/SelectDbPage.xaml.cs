@@ -4,16 +4,17 @@ using Xamarin.Forms.Xaml;
 namespace dMb.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MoviesPage : ContentPage
+    public partial class SelectDbPage : ContentPage
     {
-        ViewModels.MoviesViewModel _viewModel;
+
+        ViewModels.SelectDbViewModel _viewModel;
 
 
-        public MoviesPage()
+        public SelectDbPage()
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = new ViewModels.MoviesViewModel();
+            BindingContext = _viewModel = new ViewModels.SelectDbViewModel();
         }
 
 
@@ -23,6 +24,5 @@ namespace dMb.Views
 
             _viewModel.OnAppearing();
         }
-
     }
 }

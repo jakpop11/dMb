@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Xamarin.Forms;
-using Xamarin.Essentials;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using dMb.Models;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 
 
@@ -14,12 +10,14 @@ namespace dMb.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
-        string _FilePathDisplay = App.LocalPath;
+        string _FileNameDisplay = App.DbName;
 
 
-        public string FilePathDisplay { get => _FilePathDisplay; set => SetProperty(ref _FilePathDisplay, value); }
+        public string FileNameDisplay { get => _FileNameDisplay; set => SetProperty(ref _FileNameDisplay, value); }
 
 
+        public Command SelectDBCommand { get; }
+        public Command ShareDBCommand { get; }
         public Command PickFileCommand { get; }
         public Command ResetGenresCommand { get; }
 
@@ -29,12 +27,36 @@ namespace dMb.ViewModels
             Title = "Settings";
 
 
+            SelectDBCommand = new Command(SelectDb);
+            ShareDBCommand = new Command(ShareDb);
             PickFileCommand = new Command(async () => await PickFile());
             ResetGenresCommand = new Command(async () => await ResetGenres());
 
+        }
 
 
-            MovieGenres = new ObservableCollection<MovieGenres>();
+        async void SelectDb()
+        {
+            await Shell.Current.GoToAsync(nameof(Views.SelectDbPage));
+        }
+
+        async void ShareDb()
+        {
+            try
+            {
+                if (App.DbPath == null) return;
+
+                await Share.RequestAsync(new ShareFileRequest
+                {
+                    Title = "Share current DataBase",
+                    File = new ShareFile(App.DbPath)
+                });
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to share a file.");
+                System.Diagnostics.Debug.WriteLine("Error: " + e);
+            }
         }
 
 
@@ -42,18 +64,18 @@ namespace dMb.ViewModels
         {
             var customFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
             {
-                {DevicePlatform.Android, new[] { "vnd.android.document/directory" }  }, // how to select directory???? //Mime type for Android
-                {DevicePlatform.UWP, new[] { ".jpg" } } //? // extention for Windows
+                {DevicePlatform.Android, new[] { "image/jpeg" }  }, // how to select directory???? //Mime type for Android
+                {DevicePlatform.UWP, new[] { ".jpg" } } // extention for Windows
             });
 
-            
+
             try
             {
-                var file = await FilePicker.PickAsync( new PickOptions { FileTypes = customFileType });
+                var file = await FilePicker.PickAsync(new PickOptions { FileTypes = customFileType });
 
-                FilePathDisplay = file.FullPath;
+                FileNameDisplay = file.FullPath;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 System.Diagnostics.Debug.WriteLine("Failed to pick a file.");
             }
@@ -62,45 +84,16 @@ namespace dMb.ViewModels
 
         async Task<int> ResetGenres()
         {
-            bool result = await Shell.Current.DisplayAlert("Are you sure?", "Do you want to reset genres and clear all data about them?", accept: "Yes, I'm sure", cancel: "No, keep them");
+            bool result = await Shell.Current.DisplayAlert(
+                "Are you sure?", "Do you want to reset genres and clear all data about them?",
+                accept: "Yes, I'm sure", cancel: "No, keep them");
             if (result)
             {
                 return await App.Database.GenerateGenresAsync();
             }
             return 0;
-        
+
         }
-
-
-
-        public void OnAppearing()
-        {
-            LoadMovieGenres();
-        }
-
-
-
-        public ObservableCollection<MovieGenres> MovieGenres { get; }
-
-        async Task LoadMovieGenres()
-        {
-            try
-            {
-                MovieGenres.Clear();
-                var movieGenres = await App.Database.GetMovieGenresAsync();
-
-                foreach (var mg in movieGenres)
-                {
-                    MovieGenres.Add(mg);
-                }
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Failed to load MovieGenres.");
-            }
-        }
-
-
 
     }
 }

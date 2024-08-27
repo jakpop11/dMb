@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-
-
-
-namespace dMb.Models
+﻿namespace dMb.Models
 {
 
     public class GenreState : Services.PropertyChangedHelper

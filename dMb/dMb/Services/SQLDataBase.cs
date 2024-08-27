@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using dMb.Models;
-using Xamarin.Forms;
-using Xamarin.Essentials;
-using System.IO;
-using System.Threading.Tasks;
-using System.Linq;
+﻿using dMb.Models;
 using SQLite;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 
@@ -32,6 +26,23 @@ namespace dMb.Services
             {
                 GenerateGenresAsync().Wait(); // should be called only on file creation
             }
+
+        }
+
+        /// <summary>
+        /// / Creates Database with providet <param name="genres">
+        /// </summary>
+        /// <param name="dbPath"></param>
+        /// <param name="genres"></param>
+        public SQLDataBase(string dbPath, List<Genre> genres)
+        {
+            database = new SQLiteAsyncConnection(dbPath);
+            database.CreateTableAsync<Movie>().Wait();
+            database.CreateTableAsync<Genre>().Wait();
+            database.CreateTableAsync<MovieGenres>().Wait();
+
+            // Inserts genres into Database
+            CreateGenresTable(genres).Wait();
 
         }
 
@@ -183,6 +194,19 @@ namespace dMb.Services
                 .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// / !!! IT WILL CLEAR TABLES !!!
+        /// / Clears Genre and MovieGenres Tables, then inserts <param name="genresTable">
+        /// </summary>
+        /// <param name="genresTable"></param>
+        /// <returns></returns>
+        public Task<int> CreateGenresTable(List<Genre> genresTable)
+        {
+            // Clear table and insert genres
+            database.DeleteAllAsync<Genre>().Wait();
+            database.DeleteAllAsync<MovieGenres>().Wait();
+            return database.InsertAllAsync(genresTable);
+        }
 
         /// <summary>
         /// / !!! IT WILL CLEAR TABLES !!!
@@ -233,7 +257,7 @@ namespace dMb.Services
 
         private Task<int> AddGenreAsync(Genre genre)
         {
-            if(genre.Id != 0)
+            if (genre.Id != 0)
             {
                 // Update existing Genre
                 return database.UpdateAsync(genre);
@@ -322,9 +346,9 @@ namespace dMb.Services
         private string ConvertGenreListToString(List<Genre> genres)
         {
             string result = "(";
-            foreach(var genre in genres)
+            foreach (var genre in genres)
             {
-                result += $"{ genre.Id}, ";
+                result += $"{genre.Id}, ";
             }
             // Delete last comma and close brackets
             result = result.Remove(result.Length - 2) + ")";

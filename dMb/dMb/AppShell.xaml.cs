@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace dMb
 {
@@ -11,6 +9,8 @@ namespace dMb
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(Views.MovieDetailPage), typeof(Views.MovieDetailPage));
+            Routing.RegisterRoute(nameof(Views.SelectDbPage), typeof(Views.SelectDbPage));
+            Routing.RegisterRoute(nameof(Views.CreateDbPage), typeof(Views.CreateDbPage));
         }
 
     }
